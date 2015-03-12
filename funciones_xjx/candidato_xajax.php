@@ -247,6 +247,7 @@ function consultar($form) {
     $tabla.="</tbody></table> </td></tr></table> ";
     $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
     $objResponse->assign("dvRespuesta", "innerHTML", "$tabla");
+    $objResponse->alert($sql);
     return $objResponse;
 }
 

@@ -21,17 +21,20 @@ if ($_SESSION["pe"] == "0") {
     $pe = "disabled='true'";
 }
 ?>
-<table width="70%" class="acordeon" align="center" ><tr><td onclick='muestra_oculta(dvConsulta)' >Consulta</td></tr></table>
+<table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvConsulta')" >Consulta</td></tr></table>
 
 <div id='dvConsulta' >
-    <form id='formQuery'><table align="center" class="campo" ><tr><td>Consultar:</td><td><input type='text' id='txtConsulta' name='txtConsulta' value='' /></td><td><input type='button' name='btnConsultar' id='btnConsultar' value='Consultar' onclick='xajax_consultar(xajax.getFormValues('formQuery'))' ></td></tr></table></form> 
+    <form id='formQuery'><table align="center" class="campo" >
+            <tr><td>Consultar:</td>
+                <td><input type='text' id='txtConsulta' name='txtConsulta' value='' /></td>
+                <td><input type='button' name='btnConsultar' id='btnConsultar' value='Consultar' onclick="xajax_consultar(xajax.getFormValues('formQuery'))" ></td></tr></table></form> 
     <center> 
         <div id='dvRespuesta'> </div> 
         <div id='dvPaginacion'></div> 
     </center> 
 </div> 
 
-<table  width="70%" class="acordeon" align="center" ><tr><td onclick='muestra_oculta(dvFormulario)'>Formulario</td></tr></table>
+<table  width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvFormulario')">Formulario</td></tr></table>
 <div id='dvFormulario' >
     <form name='form' id='form' action=''>
         <table border='0' align='center'>
@@ -164,9 +167,9 @@ if ($_SESSION["pe"] == "0") {
 
 
 
-<table width="70%" class="acordeon" align="center" ><tr><td onclick='muestra_oculta(dvEstudios)' >Estudios Realizados</td></tr></table>
+<table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvEstudios')" >Estudios Realizados</td></tr></table>
 <div id='dvEstudios' >
-    <form id="formestudio" name="" >
+    <form id="formestudio" name="formestudio" >
         <table border="0" align="center" >
             <tr>
                 <td>
@@ -188,19 +191,63 @@ if ($_SESSION["pe"] == "0") {
                     <input type="text" name="txtTitulo" id="txtTitulo" value="" size="60"/>
                 </td>
                 <td>
-                    <input type="text" name="txtHoras" id="txtHoras" value="" size="20"/>
+                    <input type="text" name="txtHoras" id="txtHoras" value="" size="10"/>
                 </td>
                 <td>
-                    <input type="text" name="txtFechaInicio" id="txtFechaInicio" value="" size="30"/>
+                    <input type="text" name="txtFechaInicio" id="txtFechaInicio" value="" size="20"/>
                 </td>
                 <td>
-                    <input type="text" name="txtFechaFin" id="txtFechaFin" value="" size="30"/>
+                    <input type="text" name="txtFechaFin" id="txtFechaFin" value="" size="20"/>
                 </td>
             </tr>
         </table>
     </form>
 </div>
-<table width="70%" class="acordeon" align="center" ><tr><td onclick='muestra_oculta(dvExperiencia)' >Experiencia Laboral</td></tr></table>
+<table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvExperiencia')" >Experiencia Laboral</td></tr></table>
 <div id='dvExperiencia' >
+<form id="formexperiencia" name="formexperiencia" >
+        <table border="0" align="center" >
+            <tr>
+                <td>
+                    Empresa
+                </td>
+                <td>
+                   Cargo
+                </td>
+                <td>
+                    Tareas Principales
+                </td>
+                <td>
+                    Nro de Personas a Cargo
+                </td>
+                <td>
+                    Fecha Inicio
+                </td>
+                <td>
+                    Fecha Fin
+                </td>
+            </tr>
+            <tr>
 
+                <td>
+                    <input type="text" name="txtEmpresa" id="txtEmpresa" value="" size="30"/>
+                </td>
+                <td>
+                    <input type="text" name="txtCargo" id="txtCargo" value="" size="30"/>
+                </td>
+                <td>
+                    <textarea name="txtTareas" id="txtTareas" rows="3" cols="25"></textarea>
+                </td>
+                <td>
+                    <input type="text" name="txtNroPersonas" id="txtNroPersonas" value="" size="10"/>
+                </td>
+                <td>
+                    <input type="text" name="txtFechaInicio" id="txtFechaInicio" value="" size="20"/>
+                </td>
+                <td>
+                    <input type="text" name="txtFechaFin" id="txtFechaFin" value="" size="20"/>
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
