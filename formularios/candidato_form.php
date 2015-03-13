@@ -170,34 +170,46 @@ if ($_SESSION["pe"] == "0") {
 <table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvEstudios')" >Estudios Realizados</td></tr></table>
 <div id='dvEstudios' >
     <form id="formestudio" name="formestudio" >
-        <table border="0" align="center" >
+        <table border="0" align="center" width="70%">
             <tr>
-                <td>
+                <td width="40%">
                     Titulo Obtenido
                 </td>
-                <td>
+                <td width="20%">
                     Nro horas
                 </td>
-                <td>
+                <td width="20%">
                     Fecha Inicio
                 </td>
-                <td>
+                <td width="20%">
                     Fecha Fin
                 </td>
+                <td>
+                </td>
+                <td>
+                </td>
             </tr>
+        </table>
+        <table border="0" align="center" width="70%">
             <tr>
 
-                <td>
-                    <input type="text" name="txtTitulo" id="txtTitulo" value="" size="60"/>
+                <td width="40%">
+                    <input type="text" name="txtTitulo" id="txtTitulo" value="" size="50"/>
                 </td>
-                <td>
+                <td width="20%">
                     <input type="text" name="txtHoras" id="txtHoras" value="" size="10"/>
                 </td>
-                <td>
+                <td width="20%">
                     <input type="text" name="txtFechaInicio" id="txtFechaInicio" value="" size="20"/>
                 </td>
-                <td>
+                <td width="20%">
                     <input type="text" name="txtFechaFin" id="txtFechaFin" value="" size="20"/>
+                </td>
+                <td >
+                    <img src="imagenes/page_white_edit.png" width="16" height="16" alt="editar"/>
+                </td>
+                <td>
+                    <img src="imagenes/cross.png" width="16" height="16" alt="eliminar"/>
                 </td>
             </tr>
         </table>
@@ -206,46 +218,58 @@ if ($_SESSION["pe"] == "0") {
 <table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvExperiencia')" >Experiencia Laboral</td></tr></table>
 <div id='dvExperiencia' >
 <form id="formexperiencia" name="formexperiencia" >
-        <table border="0" align="center" >
+        <table border="0" align="center" width="70%" >
             <tr>
-                <td>
+                <td width="15%">
                     Empresa
                 </td>
-                <td>
+                <td width="15%">
                    Cargo
                 </td>
-                <td>
+                <td width="25%">
                     Tareas Principales
                 </td>
-                <td>
-                    Nro de Personas a Cargo
-                </td>
-                <td>
+                <td width="10%">
+                    # Personas Cargo
+                </td >
+                <td width="20%">
                     Fecha Inicio
                 </td>
-                <td>
+                <td width="20%">
                     Fecha Fin
                 </td>
+                <td >
+                </td>
+                <td>
+                </td>
             </tr>
+            </table>
+            <table border="0" align="center" width="70%" >
             <tr>
 
-                <td>
-                    <input type="text" name="txtEmpresa" id="txtEmpresa" value="" size="30"/>
+                <td width="15%">
+                    <input type="text" name="txtEmpresa" id="txtEmpresa" value="" size="20"/>
                 </td>
-                <td>
-                    <input type="text" name="txtCargo" id="txtCargo" value="" size="30"/>
+                <td width="15%">
+                    <input type="text" name="txtCargo" id="txtCargo" value="" size="20"/>
                 </td>
-                <td>
+                <td width="25%">
                     <textarea name="txtTareas" id="txtTareas" rows="3" cols="25"></textarea>
                 </td>
-                <td>
-                    <input type="text" name="txtNroPersonas" id="txtNroPersonas" value="" size="10"/>
+                <td width="10%">
+                    <input type="text" name="txtNroPersonas" id="txtNroPersonas" value="" size="5"/>
+                </td>
+                <td width="10%">
+                    <input type="text" name="txtFechaInicio" id="txtFechaInicio" value="" size="10"/>
+                </td>
+                <td width="20%">
+                    <input type="text" name="txtFechaFin" id="txtFechaFin" value="" size="10"/>
+                </td>
+                <td >
+                    <img src="imagenes/page_white_edit.png" width="16" height="16" alt="editar"/>
                 </td>
                 <td>
-                    <input type="text" name="txtFechaInicio" id="txtFechaInicio" value="" size="20"/>
-                </td>
-                <td>
-                    <input type="text" name="txtFechaFin" id="txtFechaFin" value="" size="20"/>
+                    <img src="imagenes/cross.png" width="16" height="16" alt="eliminar"/>
                 </td>
             </tr>
         </table>
