@@ -244,7 +244,7 @@ function generarInterface($form) {
                 \$pe =\"disabled='true'\";
             }
             ?>"
-            . "<table  width=\"70%\" class=\"acordeon\" align=\"center\" ><tr><td onclick='muestra_oculta(dvFormulario)'>Formulario</td></tr></table>\n<div id='dvFormulario' >\n";
+            . "<table  width=\"70%\" class=\"acordeon\" align=\"center\" ><tr><td onclick=\"muestra_oculta('dvFormulario')\">Formulario</td></tr></table>\n<div id='dvFormulario' >\n";
 
     $tabla = $divform . "<form name='form' id='form' action=''>\n<table border='0' align='center'>\n";
 
@@ -396,7 +396,7 @@ function generarObjHTML($tipo, $nombre, $longitud, $evento, $nmb = '') {
     } elseif ($tipo == 'checkBox') {
         $obj = "<label> <input type='checkbox' id='$nombre' name='$nombre' onchange='$evento' value='ON'>$nmb</label>";
     } elseif ($tipo == 'button') {
-        $obj = "<input type='button' name='$nombre' id='$nombre' value='$nmb' onclick='$evento' >";
+        $obj = "<input type='button' name='$nombre' id='$nombre' value='$nmb' onclick=\"$evento\" >";
     } elseif ($tipo == 'password') {
         $obj = "<input type='password' name='$nombre' id='$nombre' value='$nmb' onclick='$evento' >";
     } elseif ($tipo == 'hidden') {
