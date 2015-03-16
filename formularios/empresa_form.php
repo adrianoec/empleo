@@ -1,10 +1,9 @@
 <?php
-
-$pm="";
-$pc="";
-$pg="";
-$pa="";
-$pe="";
+$pm = "";
+$pc = "";
+$pg = "";
+$pa = "";
+$pe = "";
 
 if ($_SESSION["pm"] == "0") {
     $pm = "disabled='true'";
@@ -21,7 +20,20 @@ if ($_SESSION["pa"] == "0") {
 if ($_SESSION["pe"] == "0") {
     $pe = "disabled='true'";
 }
-?><table  width="70%" class="acordeon" align="center" ><tr><td onclick='muestra_oculta(dvFormulario)'>Formulario</td></tr></table>
+?>
+<table width="70%" class="acordeon" align="center" >
+    <tr><td onclick="muestra_oculta('dvConsulta')" >Consulta</td></tr>
+</table>
+<div id='dvConsulta' >
+
+    <form id='formQuery'><table align="center" class="campo" ><tr><td>Consultar:</td><td><input type='text' id='txtConsulta' name='txtConsulta' value='' /></td><td><input type='button' name='btnConsultar' id='btnConsultar' value='Consultar' onclick='xajax_consultar(xajax.getFormValues('formQuery'))' ></td></tr></table></form> 
+    <center> 
+        <div id='dvRespuesta'> </div> 
+        <div id='dvPaginacion'></div> 
+    </center> 
+</div> 
+
+<table  width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvFormulario')">Formulario</td></tr></table>
 <div id='dvFormulario' >
     <form name='form' id='form' action=''>
         <table border='0' align='center'>
@@ -44,7 +56,7 @@ if ($_SESSION["pe"] == "0") {
             </tr>
             <tr> 
                 <td> 
-                    CODIGO DIRECCION 
+                    DIRECCION 
                 </td> 
                 <td><div id='dvReqCODIGO_DIRECCION'><font color='red'>*</font></div></td> 
                 <td> 
@@ -115,11 +127,4 @@ if ($_SESSION["pe"] == "0") {
             </tr> 
         </table> 
     </form>  
-</div> <table width="70%" class="acordeon" align="center" ><tr><td onclick='muestra_oculta(dvConsulta)' >Consulta</td></tr></table><div id='dvConsulta' >
-
-    <form id='formQuery'><table align="center" class="campo" ><tr><td>Consultar:</td><td><input type='text' id='txtConsulta' name='txtConsulta' value='' /></td><td><input type='button' name='btnConsultar' id='btnConsultar' value='Consultar' onclick='xajax_consultar(xajax.getFormValues('formQuery'))' ></td></tr></table></form> 
-    <center> 
-        <div id='dvRespuesta'> </div> 
-        <div id='dvPaginacion'></div> 
-    </center> 
 </div> 

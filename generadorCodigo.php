@@ -63,7 +63,7 @@ function mostrarDatos($form) {
     $objResponse = new xajaxResponse();
     //$objResponse->alert("uio");
     $sql = $form['txtSql'];
-    $rs = mysql_query($sql,$enlace);
+    $rs = mysql_query($sql, $enlace);
     $nroFilas = mysql_num_rows($rs);
     $nroCol = mysql_num_fields($rs);
     $datos = array();
@@ -221,6 +221,21 @@ function generarInterface($form) {
     $cmbTipoInterface = $form['cmbTipoInterface'];
     $txtNombreArchivo = trim($form['txtNombreArchivo']);
 
+    $divconsulta = "<table width=\"70%\" align=\"center\" >\n"
+            . "<tr><td onclick=\"muestra_oculta('dvConsulta')\" >Consulta</td></tr>\n"
+            . "</table>\n"
+            . "<div id='dvConsulta' >\n";
+
+    $obj5 = generarObjHTML("button", "btnConsultar", "", "xajax_consultar(xajax.getFormValues('formQuery'))", "Consultar");
+    $formCon = "<form id='formQuery'>"
+            . "<table align=\"center\" class=\"campo\" >"
+            . "<tr>"
+            . "<td>Consultar:</td>"
+            . "<td><input type='text' id='txtConsulta' name='txtConsulta' value='' /></td>"
+            . "<td>$obj5</td>"
+            . "</tr>"
+            . "</table>"
+            . "</form>";
 
     $divform = "<?php 
         \$pm=\"\";
@@ -243,8 +258,12 @@ function generarInterface($form) {
             if(\$_SESSION[\"pe\"]==\"0\"){
                 \$pe =\"disabled='true'\";
             }
-            ?>"
-            . "<table  width=\"70%\" class=\"acordeon\" align=\"center\" ><tr><td onclick=\"muestra_oculta('dvFormulario')\">Formulario</td></tr></table>\n<div id='dvFormulario' >\n";
+            ?>
+            
+            $divconsulta \n
+            $formCon \n
+"
+            . "<table width = \"70%\" class=\"acordeon\" align=\"center\" ><tr><td onclick=\"muestra_oculta('dvFormulario')\">Formulario</td></tr></table>\n<div id='dvFormulario' >\n";
 
     $tabla = $divform . "<form name='form' id='form' action=''>\n<table border='0' align='center'>\n";
 
@@ -321,12 +340,12 @@ function generarInterface($form) {
 //        $obj4 = generarObjHTML("button", "btnCancelar", "", "xajax_limpiar(xajax.getFormValues('form'))", "Cancelar");
         $cl = $nroColumas * 2;
         $cl = $cl + 1;
-        
+
         $obj1 = "<input type=\"button\" name=\"btnGuardar\" id=\"btnGuardar\" value=\"Guardar\" onclick=\"xajax_validarForm(xajax.getFormValues('form'),0)\" <?php echo \$pg; ?> />";
         $obj2 = "<input type=\"button\" name=\"btnActualizar\" id=\"btnActualizar\" value=\"Actualizar\" onclick=\"xajax_validarForm(xajax.getFormValues('form'),1)\" <?php echo \$pa; ?> />";
         $obj3 = "<input type=\"button\" name=\"btnEliminar\" id=\"btnEliminar\" value=\"Eliminar\" onclick=\"xajax_confirmarEliminarForm(xajax.getFormValues('form'))\" <?php echo \$pe; ?> />";
         $obj4 = "<input type=\"button\" name=\"btnCancelar\" id=\"btnCancelar\" value=\"Cancelar\" onclick=\"xajax_limpiar(xajax.getFormValues('form'))\" />";
-        
+
         $tabla.="\t<tr> \n\t\t<td colspan='$cl' align='center'>\n
             \t\t\t <table align='center'> \n\t\t\t \t\t<tr>\n
             \t\t\t\t\t <td> \n\t\t\t\t\t\t\t $obj1 \n\t\t\t\t\t\t </td>\n
@@ -338,30 +357,16 @@ function generarInterface($form) {
     } else {
         $cl = $nroColumas * 2;
         //$obj1 = generarObjHTML("button", "btnConsultar", "", "xajax_validarConsulta(xajax.getFormValues(form))", "Consultar");
-        
-         
-          $obj1 = "<input type=\"button\" name=\"btnConsultar\" id=\"btnConsultar\" value=\"Consultar\" onclick=\"xajax_validarConsulta(xajax.getFormValues(form))\" <?php echo \$pc; ?> >";
-        
+
+
+        $obj1 = "<input type=\"button\" name=\"btnConsultar\" id=\"btnConsultar\" value=\"Consultar\" onclick=\"xajax_validarConsulta(xajax.getFormValues(form))\" <?php echo \$pc; ?> >";
+
         $tabla.="<tr> \n\t\t <td colspan='$cl' align='center'> \n\t\t\t $obj1 \n\t\t </td> \n </tr> \n";
     }
 
     $tabla.="</table> \n </form> "
             . " \n </div> ";
 
-    $divconsulta = "<table width=\"70%\" class=\"acordeon\" align=\"center\" ><tr><td onclick='muestra_oculta(dvConsulta)' >Consulta</td></tr></table><div id='dvConsulta' >\n";
-
-    $obj5 = generarObjHTML("button", "btnConsultar", "", "xajax_consultar(xajax.getFormValues('formQuery'))", "Consultar");
-
-    $formCon = "<form id='formQuery'>"
-            . "<table align=\"center\" class=\"campo\" >"
-            . "<tr>"
-            . "<td>Consultar:</td>"
-            . "<td><input type='text' id='txtConsulta' name='txtConsulta' value='' /></td>"
-            . "<td>$obj5</td>"
-            . "</tr>"
-            . "</table>"
-            . "</form>";
-    $tabla.=$divconsulta . " \n $formCon \n<center> \n\t <div id='dvRespuesta'> </div> \n\t <div id='dvPaginacion'></div> \n </center> \n</div> \n ";
 
 
 
@@ -429,7 +434,7 @@ function generarFunciones() {
     $campoValues = "";
 
     $campoLimpiar = "";
-    $campoSelect="";
+    $campoSelect = "";
 
     for ($i = 0; $i < $nroFilas; $i++) {
         $nombre = $form['txtCol' . $i];
@@ -444,7 +449,7 @@ function generarFunciones() {
         $evento = "";
 
         $campoLimpiar.="\$objResponse->assign(\"$nombre\",\"value\",\"\");\n";
-        
+
         $campoSelect.="\$objResponse->assign(\"$nombre\",\"value\",\"\$nombre\");\n";
 
         if ($comboSN == 'S') { // si el campo se debe  mostrar en el form
@@ -520,7 +525,6 @@ function generarFunciones() {
 
     function validarForm(\$form, \$opcion){
     $campos
-    \t global \$enlace, \$objPaginacion, \$objComun;\n
     \t \$objResponse = new xajaxResponse();\n
     \t \$msg=\"\";
     $validar
@@ -539,7 +543,6 @@ function generarFunciones() {
 
     function ingresar(\$form){\n
     $campos
-    \t global  \$objPaginacion, \$objComun;\n
     \$objDB = new Database();
     \$objDB->setParametrosBD(HOST, BASE, USER, PWD);
     \$objDB->getConexion();
@@ -548,11 +551,11 @@ function generarFunciones() {
     \t \$sqlInsert .= \"($campoValues);\" ;\n
     \t \$rs=\$objDB->query(\$sqlInsert);\n
     \t \$objResponse->alert(\"Registrado...\");
+    \$objDB->Cerrar(); \n
     \t return \$objResponse;\n
     }\n
     function actualizar(\$form){\n
     $campos
-    \t global  \$objPaginacion, \$objComun;\n
     \$objDB = new Database();
     \$objDB->setParametrosBD(HOST, BASE, USER, PWD);
     \$objDB->getConexion();
@@ -560,11 +563,11 @@ function generarFunciones() {
     \t \$sqlUpdate = \"update  $txtNombreTabla set $campoUpdate where $campoUpdatewhere\" ;\n
     \t \$rs=\$objDB->query(\$sqlUpdate);\n
     \t \$objResponse->alert(\"Actualizado...\");
+    \$objDB->Cerrar(); \n
     \t return \$objResponse;\n
     }\n
     
 function confirmarEliminarForm(\$form){\n
-    \t global \$enlace, \$objPaginacion, \$objComun;\n
     \t \$objResponse = new xajaxResponse();\n
     \$objResponse->confirmCommands(1, \"Deseas eliminar el registro?\");
     \$objResponse->call(\"xajax_eliminar\",\$form);
@@ -573,15 +576,16 @@ function confirmarEliminarForm(\$form){\n
     
 function eliminar(\$form){\n
     $campos
-    \t global \$objPaginacion, \$objComun;\n
     \$objResponse = new xajaxResponse();
     \$objDB = new Database();
     \$objDB->setParametrosBD(HOST, BASE, USER, PWD);
     \$objDB->getConexion();
     \t \$objResponse = new xajaxResponse();\n
-    \t \$sqlUpdate = \"update  $txtNombreTabla set activo=0 where $campoUpdatewhere\" ;\n
+    \t \$codigo = \$form[\"\"];
+    \t \$sqlUpdate = \"update  $txtNombreTabla set estado=0 where codigo = '\$codigo' \" ;\n
     \t \$rs=\$objDB->query(\$sqlUpdate);\n
     \t \$objResponse->alert(\"Desactivado...\");
+    \$objDB->Cerrar(); \n
     \t return \$objResponse;\n
     }\n
 
@@ -599,7 +603,7 @@ function seleccionar(\$id){\n
     \$objDB->getConexion();
 
     \$sql = \" select *    from $txtNombreTabla 
-    where  XXXXXXXXXXXX  like '%\$query%' \";
+    where  codigo  = '\$id' ;\";
 
     \$result = \$objDB->query(\$sql);
     \$numCols = \$objDB->getNumCols();
@@ -608,6 +612,7 @@ function seleccionar(\$id){\n
     
 $campoSelect
     
+    \$objDB->Cerrar(); \n
     \t return \$objResponse;\n
     }\n
 
@@ -620,7 +625,7 @@ function consultar(\$form) {
     \$objDB->getConexion();
 
     \$sql = \" select *    from $txtNombreTabla 
-    where  XXXXXXXXXXXX  like '%\$query%' \";
+    where  concat(  , ' ',   , ' ',  )  like '%\$query%' \";
 
     \$result = \$objDB->query(\$sql);
     \$numCols = \$objDB->getNumCols();
@@ -654,14 +659,9 @@ function consultar(\$form) {
     \$tabla.=\"</tbody></table> </td></tr></table> \";
     \$objResponse->script('function loadTabla(){\$(\"table\").tablesorter({ widgets: [\'zebra\']});  }  $(function() {\$(\"table\") .tablesorter({ widgets: [\'zebra\']});  });');
     \$objResponse->assign(\"dvRespuesta\", \"innerHTML\", \"\$tabla\");
+    \$objDB->Cerrar(); \n
     return \$objResponse;
 }
-
-
-
-
-
-
 
     \$xajax->register(XAJAX_FUNCTION,\"validarForm\");\n
     \$xajax->register(XAJAX_FUNCTION,\"ingresar\");\n
@@ -697,11 +697,11 @@ function generarPrincipal() {
             header(\"Location: login.php\");
             exit;
         }
-        include_once(HOME.'funciones_xjx/$txtNombreArchivo"."_xajax.php');
+        include_once(HOME.'funciones_xjx/$txtNombreArchivo" . "_xajax.php');
         include_once (HOME.'include/xajax_conf_process.php');
         include_once (HOME.'include/cabecera.php');
         include_once (HOME.'include/menu.php');
-        include_once(HOME.'formularios/$txtNombreArchivo"."_form.php');
+        include_once(HOME.'formularios/$txtNombreArchivo" . "_form.php');
         include_once(HOME.'include/pie.php');
     ?>";
 
