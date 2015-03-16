@@ -70,6 +70,7 @@ function hijo($objDB, $codigo) {
 
     $rs = $objDB->query($sqlUpdate);
     $numrows = $objDB->getNumRows();
+    $m="";
     if ($numrows > 0) {
         $m.="\n<ul>";
         while ($ln = $objDB->fetch_array($rs)) {

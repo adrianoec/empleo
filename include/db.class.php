@@ -14,7 +14,7 @@ class Database {
     }
 
     function __destruct() {
-        $this->close();
+        $this->close($this->_dblink);
     }
 
     public function getNumRows() {
@@ -58,11 +58,11 @@ class Database {
             if ($result == true) {
                 $this->_numRows = mysql_num_rows($result);
                 $this->_numCols = mysql_num_fields($result);
-                $this->_affectedRows = mysql_affected_rows($result);
+                $this->_affectedRows = mysql_affected_rows();
                 $this->_lastOid = 0;
                 $this->_lastError = null;
             } else {
-                $this->_lastError = mysql_error($this->_dblink);
+                $this->_lastError = mysql_error();
                 $this->_numRows = null;
                 $this->_numCols = null;
                 $this->_affectedRows = null;
@@ -112,8 +112,9 @@ class Database {
      * @return boolean
      */
     private function connect() {
-        $this->_dblink = mysql_connect($this->_dbhost . ":" . $this->_port, $this->_dbname, $this->_dbpasswd);
+        $this->_dblink = mysql_connect($this->_dbhost , $this->_dbuser, $this->_dbpasswd);
         if ($this->_dblink) {
+            mysql_select_db($this->_dbname, $this->_dblink);
             $this->_connection_status = mysql_stat($this->_dblink);
             return true;
         }
