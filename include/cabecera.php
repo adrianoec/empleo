@@ -21,5 +21,14 @@
      
         <link rel="stylesheet" href="./lib/jdMenu-1.4.1/1.4.1/jquery.jdMenu.css" type="text/css" />
         <link rel="stylesheet" href="include/web.css" type="text/css" />
+        
+        <link rel="stylesheet" type="text/css" href="./lib/simple-calendar/tcal.css" />
+	<script type="text/javascript" src="./lib/simple-calendar/tcal.js"></script>
+        
+        <link rel="stylesheet" href="./lib/modal-message/css/modal-message.css" type="text/css">
+        <script type="text/javascript" src="./lib/modal-message/js/ajax.js"></script>
+        <script type="text/javascript" src="./lib/modal-message/js/modal-message.js"></script>
+        <script type="text/javascript" src="./lib/modal-message/js/ajax-dynamic-content.js"></script>
+        
     </head> 
    

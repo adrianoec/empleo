@@ -34,9 +34,9 @@ if ($_SESSION["pe"] == "0") {
     </center> 
 </div> 
 
-<table  width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvFormulario')">Formulario</td></tr></table>
+<table  width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvFormulario')">Candidato</td></tr></table>
 <div id='dvFormulario' >
-    <form name='form' id='form' action=''>
+    <form name='form' id='form' action='' enctype="multipart/form-data">
         <table border='0' align='center'>
             <tr> 
                 <td> 
@@ -46,7 +46,8 @@ if ($_SESSION["pe"] == "0") {
                 <td> 
                     <input type='text' name='codigo' id='codigo' value='' onfocus='' size='40'> 
                 </td>
-
+            </tr>
+            <tr>
                 <td> 
                     NOMBRES 
                 </td> 
@@ -63,7 +64,8 @@ if ($_SESSION["pe"] == "0") {
                 <td> 
                     <input type='text' name='apellidos' id='apellidos' value='' onfocus='' size='40'> 
                 </td>
-
+            </tr>
+            <tr>
                 <td> 
                     FECHA NACIMIENTO 
                 </td> 
@@ -78,9 +80,14 @@ if ($_SESSION["pe"] == "0") {
                 </td> 
                 <td><div id='dvReqGENERO'><font color='red'>*</font></div></td> 
                 <td> 
-                    <select name='genero' id='genero' onchange=''><option value=''>Seleccione...</option></select> 
+                    <select name='genero' id='genero' onchange=''>
+                        <option value=''>Seleccione</option>
+                        <option value='F'>Femenino</option>
+                        <option value='M'>Masculino</option>
+                    </select> 
                 </td>
-
+            </tr>
+            <tr>
                 <td> 
                     TELEFONO 
                 </td> 
@@ -98,41 +105,43 @@ if ($_SESSION["pe"] == "0") {
                     <input type='text' name='movil' id='movil' value='' onfocus='' size='40'> 
                 </td>
 
-                <td> 
-                    CODIGO DIRECCION 
-                </td> 
-                <td><div id='dvReqCODIGO_DIRECCION'><font color='red'>*</font></div></td> 
-                <td> 
-                    <input type='text' name='codigo_direccion' id='codigo_direccion' value='' onfocus='' size='40'> 
-                </td>
             </tr>
-            <tr> 
+            <tr>
+
                 <td> 
                     ARCHIVO 
                 </td> 
                 <td><div id='dvReqARCHIVO'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' name='archivo' id='archivo' value='' onfocus='' size='40'> 
+                    <input type="file" name="txtFile" id="txtFile" value="" />
                 </td>
 
-                <td> 
-                    CODIGO GRUPO ETNICO 
-                </td> 
-                <td><div id='dvReqCODIGO_GRUPO_ETNICO'><font color='red'>*</font></div></td> 
-                <td> 
-                    <select name='codigo_grupo_etnico' id='codigo_grupo_etnico' onchange=''><option value=''>Seleccione...</option></select> 
-                </td>
             </tr>
             <tr> 
 
+
+                <td> 
+                    GRUPO ETNICO 
+                </td> 
+                <td><div id='dvReqCODIGO_GRUPO_ETNICO'><font color='red'>*</font></div></td> 
+                <td> 
+                    <?php echo $cmbGrupoEtnico ?> 
+                </td>
+
+            </tr>
+            <tr>
                 <td> 
                     DISPONIBILIDAD 
                 </td> 
                 <td><div id='dvReqDISPONIBILIDAD'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' name='disponibilidad' id='disponibilidad' value='' onfocus='' size='40'> 
+                    <?php echo $cmbDisponibilidad ?>
                 </td>
             </tr>
+
+
+
+
             <tr> 
                 <td colspan='5' align='center'>
 
@@ -165,9 +174,34 @@ if ($_SESSION["pe"] == "0") {
     </form>  
 </div> 
 
+<table width="70%" class="acordeon" align="center" >
+    <tr>
+        <td onclick="muestra_oculta('dvDireccion')" >Direcciones </td>
+        <td align="right">
+            <img src="imagenes/add.png" width="16" height="16" alt="add" 
+                 onclick="displayStaticMessage('<?php echo formDireccion()?>', false,400,200); return false"/> 
+        </td>
+    </tr>
+</table>
+<div id='dvDireccion' >
+
+</div>
 
 
-<table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvEstudios')" >Estudios Realizados</td></tr></table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvEstudios')" >Estudios Realizados</td><td align="right"><img src="imagenes/add.png" width="16" height="16" alt="add"/></tr></table>
 <div id='dvEstudios' >
     <form id="formestudio" name="formestudio" >
         <table border="0" align="center" width="70%">
@@ -215,16 +249,23 @@ if ($_SESSION["pe"] == "0") {
         </table>
     </form>
 </div>
-<table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvExperiencia')" >Experiencia Laboral</td></tr></table>
+
+
+<table width="70%" class="acordeon" align="center" >
+    <tr>
+        <td onclick="muestra_oculta('dvExperiencia')" >Experiencia Laboral</td> 
+        <td align="right"><img src="imagenes/add.png" width="16" height="16" alt="add"/></td>
+    </tr>
+</table>
 <div id='dvExperiencia' >
-<form id="formexperiencia" name="formexperiencia" >
+    <form id="formexperiencia" name="formexperiencia" >
         <table border="0" align="center" width="70%" >
             <tr>
-                <td width="15%">
+                <td width="17%">
                     Empresa
                 </td>
                 <td width="15%">
-                   Cargo
+                    Cargo
                 </td>
                 <td width="25%">
                     Tareas Principales
@@ -232,10 +273,10 @@ if ($_SESSION["pe"] == "0") {
                 <td width="10%">
                     # Personas Cargo
                 </td >
-                <td width="20%">
+                <td width="15%">
                     Fecha Inicio
                 </td>
-                <td width="20%">
+                <td width="15%">
                     Fecha Fin
                 </td>
                 <td >
@@ -243,8 +284,8 @@ if ($_SESSION["pe"] == "0") {
                 <td>
                 </td>
             </tr>
-            </table>
-            <table border="0" align="center" width="70%" >
+        </table>
+        <table border="0" align="center" width="70%" >
             <tr>
 
                 <td width="15%">
@@ -259,7 +300,7 @@ if ($_SESSION["pe"] == "0") {
                 <td width="10%">
                     <input type="text" name="txtNroPersonas" id="txtNroPersonas" value="" size="5"/>
                 </td>
-                <td width="10%">
+                <td width="20%">
                     <input type="text" name="txtFechaInicio" id="txtFechaInicio" value="" size="10"/>
                 </td>
                 <td width="20%">

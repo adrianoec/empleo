@@ -1,6 +1,79 @@
 <?php
 
+$objFunciones = new Funciones();
+$sqlgrupo = "select codigo, nombre  from  grupo_etnico ";
+$cmbGrupoEtnico = $objFunciones->generarCombo("cmbGrupoEtnico", $sqlgrupo, "", true, false, "", "");
+
+$sqldisponibilidad = "select codigo, nombre  from  disponibilidad ";
+$cmbDisponibilidad = $objFunciones->generarCombo("cmbDisponibilidad", $sqldisponibilidad, "", true, false, "", "");
+
+function formDireccion($codigo=0) {
+
+    if($codigo>0){
+        
+    }else{
+        $p="";
+        $s="";
+        $n="";
+        $r="";
+        $p="";
+    }
+    $html = "<form id=\'formdireccion\' name=\'formdireccion\' >" .
+            "<table border=\'0\' align=\'center\'>" .
+            "<tr>" .
+            "<td>" .
+            "Calle Principal" .
+            "</td>" .
+            "<td>" .
+            "<input type=\'text\' name=\'txtPrincipal\' id=\'txtPrincipal\' value=\'$p\' />" .
+            "</td>" .
+            "</tr>" .
+            "<tr>" .
+            "<td>" .
+            "Calle Secundaria" .
+            "</td>" .
+            "<td>" .
+            "<input type=\'text\' name=\'txtSecundaria\' id=\'txtSecundaria\' value=\'$s\' />" .
+            "</td>" .
+            "</tr>" .
+            "<tr>" .
+            "<td>" .
+            "Nro" .
+            "</td>" .
+            "<td>" .
+            "<input type=\'text\' name=\'txtnro\' id=\'txtnro\' value=\'$n\' />" .
+            "</td>" .
+            "</tr>" .
+            "<tr>" .
+            "<td>" .
+            "Referencia" .
+            "</td>" .
+            "<td>" .
+            "<input type=\'text\' name=\'txtReferencia\' id=\'txtReferencia\' value=\'$r\' />" .
+            "</td>" .
+            "</tr>" .
+            "<tr>" .
+            "<td>" .
+            "Ciudad" .
+            "</td>" .
+            "<td>" .
+            "</td>" .
+            "</tr>" .
+            "<tr>" .
+            "<td >" .
+            "<input type=\'button\' name=\'btnGuardar\' id=\'btnGuardar\' value=\'Guardar\' onclick=xajax_validarForm(xajax.getFormValues(\'formdireccion\')) />" .
+            "</td>" .
+            "<td >" .
+            "<input type=\'button\' name=\'btnCerrar\' id=\'btnCerrar\' value=\'Cerrar\' onclick=\'closeMessage();return false\' />" .
+            "</td>".
+            "</tr>" .
+            "</table>" .
+            "</form>";
+    return $html;
+}
+
 function validarForm($form, $opcion) {
+
     $codigo = strtoupper(trim($form['codigo']));
     $nombres = strtoupper(trim($form['nombres']));
     $apellidos = strtoupper(trim($form['apellidos']));
@@ -8,9 +81,8 @@ function validarForm($form, $opcion) {
     $genero = strtoupper(trim($form['genero']));
     $telefono = strtoupper(trim($form['telefono']));
     $movil = strtoupper(trim($form['movil']));
-    $codigo_direccion = strtoupper(trim($form['codigo_direccion']));
     $archivo = strtoupper(trim($form['archivo']));
-    $codigo_grupo_etnico = strtoupper(trim($form['codigo_grupo_etnico']));
+    $codigo_grupo_etnico = strtoupper(trim($form['cmbGrupoEtnico']));
     $disponibilidad = strtoupper(trim($form['disponibilidad']));
     $objResponse = new xajaxResponse();
     $msg = "";
@@ -32,18 +104,17 @@ function validarForm($form, $opcion) {
     if (strcasecmp($telefono, '') == 0 or strcasecmp($telefono, 'seleccione') == 0) {
         $msg.="\nINGRESE TELEFONO...";
     }
-    if (strcasecmp($codigo_direccion, '') == 0 or strcasecmp($codigo_direccion, 'seleccione') == 0) {
-        $msg.="\nINGRESE CODIGO DIRECCION...";
-    }
     if (strcasecmp($archivo, '') == 0 or strcasecmp($archivo, 'seleccione') == 0) {
         $msg.="\nINGRESE ARCHIVO...";
     }
     if (strcasecmp($codigo_grupo_etnico, '') == 0 or strcasecmp($codigo_grupo_etnico, 'seleccione') == 0) {
-        $msg.="\nSELECCIONE CODIGO GRUPO ETNICO...";
+        $msg.="\nSELECCIONE GRUPO ETNICO...";
     }
     if (strcasecmp($disponibilidad, '') == 0 or strcasecmp($disponibilidad, 'seleccione') == 0) {
         $msg.="\nINGRESE DISPONIBILIDAD...";
     }
+
+    $objResponse->alert(print_r($form, true));
     if (strlen(trim($msg)) > 0) {
         $objResponse->alert($msg);
         return $objResponse;
