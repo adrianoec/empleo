@@ -46,7 +46,15 @@
     /************************************************************/
     messageObj = new DHTML_modalMessage();	// We only create one object of this class
     messageObj.setShadowOffset(5);	// Large shadow
+    function displayMessage(url, largo, alto)
+    {
 
+        messageObj.setSource(url);
+        messageObj.setCssClassMessageBox(false);
+        messageObj.setSize(largo, alto);
+        messageObj.setShadowDivVisible(true);	// Enable shadow for these boxes
+        messageObj.display();
+    }
     function displayStaticMessage(messageContent, cssClass, largo, alto)
     {
         messageObj.setHtmlContent(messageContent);
@@ -97,4 +105,21 @@
     /*************************************************************/
     /********************  FIN MENU ******************************/
     /*************************************************************/
+
+
+    var dp_cal;
+    function show_calendar(id) {
+        //alert(id);
+        dp_cal = new Epoch('epoch_popup', 'popup', document.getElementById(id));
+
+    }
+    ;
+
+    function popitup(url,name,h,w) {
+        newwindow = window.open(url, name, 'height='+h+',width='+w);
+        if (window.focus) {
+            newwindow.focus()
+        }
+        return false;
+    }
 </script>

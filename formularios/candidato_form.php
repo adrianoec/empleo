@@ -4,7 +4,7 @@ $pc = "";
 $pg = "";
 $pa = "";
 $pe = "";
-
+$_SESSION["codigo_candidato"]="0";
 if ($_SESSION["pm"] == "0") {
     $pm = "disabled='true'";
 }
@@ -42,9 +42,9 @@ if ($_SESSION["pe"] == "0") {
                 <td> 
                     CODIGO 
                 </td> 
-                <td><div id='dvReqCODIGO'><font color='red'>*</font></div></td> 
+                <td><div id='dvReqCODIGO'><font color='red'></font></div></td> 
                 <td> 
-                    <input type='text' name='codigo' id='codigo' value='' onfocus='' size='40'> 
+                    <input type='text' name='codigo' id='codigo' value='' onfocus='' size='40' disabled="true"> 
                 </td>
             </tr>
             <tr>
@@ -71,7 +71,7 @@ if ($_SESSION["pe"] == "0") {
                 </td> 
                 <td><div id='dvReqFECHA_NACIMIENTO'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' name='fecha_nacimiento' id='fecha_nacimiento' value='' onfocus='' size='40'> 
+                    <input type='text' class="tcal" name='fecha_nacimiento' id='fecha_nacimiento' value='' onfocus='' size='40'> 
                 </td>
             </tr>
             <tr> 
@@ -179,140 +179,47 @@ if ($_SESSION["pe"] == "0") {
         <td onclick="muestra_oculta('dvDireccion')" >Direcciones </td>
         <td align="right">
             <img src="imagenes/add.png" width="16" height="16" alt="add" 
-                 onclick="displayStaticMessage('<?php echo formDireccion()?>', false,400,200); return false"/> 
+                 onclick="return popitup('./direccion_aux.php', 'estudio', 300, 400);"     
+                 /> 
         </td>
     </tr>
 </table>
-<div id='dvDireccion' >
+<center> 
+    <div id='dvDireccion' >
 
-</div>
+    </div>
+</center> 
 
+<!-- onclick="displayMessage('./estudio_aux.php', 450,300); return false" -->
+<table width="70%" class="acordeon" align="center" >
+    <tr>
+        <td onclick="muestra_oculta('dvEstudios')" >Estudios Realizados</td>
+        <td align="right">
+            <img src="imagenes/add.png" width="16" height="16" alt="add" 
+                 onclick="return popitup('./estudio_aux.php', 'estudio', 300, 400);"     
+                 /> 
+        </td>
 
+    </tr>
+</table>
+<center> 
+    <div id='dvEstudios' >
 
-
-
-
-
-
-
-
-
-
-
-
-
-<table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvEstudios')" >Estudios Realizados</td><td align="right"><img src="imagenes/add.png" width="16" height="16" alt="add"/></tr></table>
-<div id='dvEstudios' >
-    <form id="formestudio" name="formestudio" >
-        <table border="0" align="center" width="70%">
-            <tr>
-                <td width="40%">
-                    Titulo Obtenido
-                </td>
-                <td width="20%">
-                    Nro horas
-                </td>
-                <td width="20%">
-                    Fecha Inicio
-                </td>
-                <td width="20%">
-                    Fecha Fin
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
-        </table>
-        <table border="0" align="center" width="70%">
-            <tr>
-
-                <td width="40%">
-                    <input type="text" name="txtTitulo" id="txtTitulo" value="" size="50"/>
-                </td>
-                <td width="20%">
-                    <input type="text" name="txtHoras" id="txtHoras" value="" size="10"/>
-                </td>
-                <td width="20%">
-                    <input type="text" name="txtFechaInicio" id="txtFechaInicio" value="" size="20"/>
-                </td>
-                <td width="20%">
-                    <input type="text" name="txtFechaFin" id="txtFechaFin" value="" size="20"/>
-                </td>
-                <td >
-                    <img src="imagenes/page_white_edit.png" width="16" height="16" alt="editar"/>
-                </td>
-                <td>
-                    <img src="imagenes/cross.png" width="16" height="16" alt="eliminar"/>
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
-
+    </div>
+</center> 
 
 <table width="70%" class="acordeon" align="center" >
     <tr>
         <td onclick="muestra_oculta('dvExperiencia')" >Experiencia Laboral</td> 
-        <td align="right"><img src="imagenes/add.png" width="16" height="16" alt="add"/></td>
+        <td align="right">
+            <img src="imagenes/add.png" width="16" height="16" alt="add" 
+                 onclick="return popitup('./experiencia_aux.php', 'estudio', 400, 400);"     
+                 /> 
+        </td>
     </tr>
 </table>
-<div id='dvExperiencia' >
-    <form id="formexperiencia" name="formexperiencia" >
-        <table border="0" align="center" width="70%" >
-            <tr>
-                <td width="17%">
-                    Empresa
-                </td>
-                <td width="15%">
-                    Cargo
-                </td>
-                <td width="25%">
-                    Tareas Principales
-                </td>
-                <td width="10%">
-                    # Personas Cargo
-                </td >
-                <td width="15%">
-                    Fecha Inicio
-                </td>
-                <td width="15%">
-                    Fecha Fin
-                </td>
-                <td >
-                </td>
-                <td>
-                </td>
-            </tr>
-        </table>
-        <table border="0" align="center" width="70%" >
-            <tr>
+<center> 
+    <div id='dvExperiencia' >
 
-                <td width="15%">
-                    <input type="text" name="txtEmpresa" id="txtEmpresa" value="" size="20"/>
-                </td>
-                <td width="15%">
-                    <input type="text" name="txtCargo" id="txtCargo" value="" size="20"/>
-                </td>
-                <td width="25%">
-                    <textarea name="txtTareas" id="txtTareas" rows="3" cols="25"></textarea>
-                </td>
-                <td width="10%">
-                    <input type="text" name="txtNroPersonas" id="txtNroPersonas" value="" size="5"/>
-                </td>
-                <td width="20%">
-                    <input type="text" name="txtFechaInicio" id="txtFechaInicio" value="" size="10"/>
-                </td>
-                <td width="20%">
-                    <input type="text" name="txtFechaFin" id="txtFechaFin" value="" size="10"/>
-                </td>
-                <td >
-                    <img src="imagenes/page_white_edit.png" width="16" height="16" alt="editar"/>
-                </td>
-                <td>
-                    <img src="imagenes/cross.png" width="16" height="16" alt="eliminar"/>
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
+    </div>
+</center> 

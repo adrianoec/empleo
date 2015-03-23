@@ -3,10 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/htdocs/empleo/formularios/candidato_form.php</file>
-            <file>file:/F:/htdocs/empleo/include/pie.php</file>
-            <file>file:/F:/htdocs/empleo/generadorCodigo.php</file>
-            <file>file:/F:/htdocs/empleo/funciones_xjx/candidato_xajax.php</file>
+            <file>file:/D:/htdocs/empleo/estudio_aux.php</file>
+            <file>file:/D:/htdocs/empleo/funciones_xjx/candidato_xajax.php</file>
+            <file>file:/D:/htdocs/empleo/include/cabecera.php</file>
+            <file>file:/D:/htdocs/empleo/formularios/estudio_form.php</file>
+            <file>file:/D:/htdocs/empleo/formularios/candidato_form.php</file>
+            <file>file:/D:/htdocs/empleo/formularios/empleo_form.php</file>
+            <file>file:/D:/htdocs/empleo/funciones_xjx/empleo_xajax.php</file>
         </group>
     </open-files>
 </project-private>

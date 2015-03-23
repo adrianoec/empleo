@@ -1,30 +1,40 @@
 <?php
 
+$objFunciones = new Funciones();
+$sqlgrupo = "select codigo, nombre  from  pais ";
+$cmbPais = $objFunciones->generarCombo("codigo_pais", $sqlgrupo, " onchange='xajax_verProvincia(this.value)' ", true, false, "", "");
+
+function verProvincia($pais) {
+    $objFunciones = new Funciones();
+    $sqlgrupo = "select codigo, nombre  from  provincia where codigo_pais ='$pais' ";
+    $cmb = $objFunciones->generarCombo("codigo_provincia", $sqlgrupo, " onchange='xajax_verCiudad(this.value)' ", true, false, "", "");
+    $objResponse = new xajaxResponse();
+
+    $objResponse->assign("dvProvincia", "innerHTML", $cmb);
+    return $objResponse;
+}
+
+function verCiudad($provinvia) {
+    $objFunciones = new Funciones();
+    $sqlgrupo = "select codigo, nombre  from  ciudad where codigo_provincia ='$provinvia' ";
+    $cmb = $objFunciones->generarCombo("codigo_ciudad", $sqlgrupo, " ", true, false, "", "");
+    $objResponse = new xajaxResponse();
+
+    $objResponse->assign("dvCiudad", "innerHTML", $cmb);
+    return $objResponse;
+}
+
 function validarForm($form, $opcion) {
     $codigo = strtoupper(trim($form['codigo']));
-
     $calle_principal = strtoupper(trim($form['calle_principal']));
-
     $calle_secundaria = strtoupper(trim($form['calle_secundaria']));
-
     $nro = strtoupper(trim($form['nro']));
-
     $referencia = strtoupper(trim($form['referencia']));
-
     $codigo_ciudad = strtoupper(trim($form['codigo_ciudad']));
-
-    $codigo_candidato = strtoupper(trim($form['codigo_candidato']));
-
-
-    global $enlace, $objPaginacion, $objComun;
 
     $objResponse = new xajaxResponse();
 
     $msg = "";
-
-    if (strcasecmp($codigo, '') == 0 or strcasecmp($codigo, 'seleccione') == 0) {
-        $msg.="\nINGRESE CODIGO...";
-    }
 
     if (strcasecmp($calle_principal, '') == 0 or strcasecmp($calle_principal, 'seleccione') == 0) {
         $msg.="\nINGRESE CALLE PRINCIPAL...";
@@ -46,15 +56,11 @@ function validarForm($form, $opcion) {
         $msg.="\nSELECCIONE CODIGO CIUDAD...";
     }
 
-    if (strcasecmp($codigo_candidato, '') == 0 or strcasecmp($codigo_candidato, 'seleccione') == 0) {
-        $msg.="\nSELECCIONE CODIGO CANDIDATO...";
-    }
-
     if (strlen(trim($msg)) > 0) {
         $objResponse->alert($msg);
         return $objResponse;
     } else {
-        if ($opcion == 0) { // inserta
+        if (strlen($_GET["codigo"]) == 0) { // inserta
             $objResponse->call("xajax_ingresar", $form);
         } else { // actualizar
             $objResponse->call("xajax_actualizar", $form);
@@ -65,56 +71,36 @@ function validarForm($form, $opcion) {
 
 function ingresar($form) {
 
-    $codigo = strtoupper(trim($form['codigo']));
-
     $calle_principal = strtoupper(trim($form['calle_principal']));
-
     $calle_secundaria = strtoupper(trim($form['calle_secundaria']));
-
     $nro = strtoupper(trim($form['nro']));
-
     $referencia = strtoupper(trim($form['referencia']));
-
     $codigo_ciudad = strtoupper(trim($form['codigo_ciudad']));
-
-    $codigo_candidato = strtoupper(trim($form['codigo_candidato']));
-
-
-    global $objPaginacion, $objComun;
-
     $objDB = new Database();
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
     $objResponse = new xajaxResponse();
-
+    $codigo_candidato = $_SESSION["codigo_candidato"];
     $sqlInsert = "insert into direccion (calle_principal,calle_secundaria,nro,referencia,codigo_ciudad,codigo_candidato) values";
-
     $sqlInsert .= "('$calle_principal','$calle_secundaria','$nro','$referencia','$codigo_ciudad','$codigo_candidato');";
-
     $rs = $objDB->query($sqlInsert);
-
-    $objResponse->alert("Registrado...");
+    if ($rs) {
+        $objResponse->alert("Registrado...");
+    } else {
+        $objResponse->alert("Error:\n$sqlInsert\n" . $objDB->getLastError());
+    }
     return $objResponse;
 }
 
 function actualizar($form) {
 
     $codigo = strtoupper(trim($form['codigo']));
-
     $calle_principal = strtoupper(trim($form['calle_principal']));
-
     $calle_secundaria = strtoupper(trim($form['calle_secundaria']));
-
     $nro = strtoupper(trim($form['nro']));
-
     $referencia = strtoupper(trim($form['referencia']));
-
     $codigo_ciudad = strtoupper(trim($form['codigo_ciudad']));
-
     $codigo_candidato = strtoupper(trim($form['codigo_candidato']));
-
-
-    global $objPaginacion, $objComun;
 
     $objDB = new Database();
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
@@ -131,8 +117,12 @@ function actualizar($form) {
 ";
 
     $rs = $objDB->query($sqlUpdate);
+    if ($rs) {
+        $objResponse->alert("Actualizado...");
+    } else {
+        $objResponse->alert("Error:\n$sqlUpdate\n" . $objDB->getLastError());
+    }
 
-    $objResponse->alert("Actualizado...");
     return $objResponse;
 }
 
@@ -206,20 +196,20 @@ function seleccionar($id) {
     $objDB->getConexion();
 
     $sql = " select *    from direccion 
-    where  XXXXXXXXXXXX  like '%$query%' ";
+    where  codigo  = '$id' ";
 
     $result = $objDB->query($sql);
     $numCols = $objDB->getNumCols();
 
     $ln = $objDB->fetch_array($result);
 
-    $objResponse->assign("codigo", "value", "$nombre");
-    $objResponse->assign("calle_principal", "value", "$nombre");
-    $objResponse->assign("calle_secundaria", "value", "$nombre");
-    $objResponse->assign("nro", "value", "$nombre");
-    $objResponse->assign("referencia", "value", "$nombre");
-    $objResponse->assign("codigo_ciudad", "value", "$nombre");
-    $objResponse->assign("codigo_candidato", "value", "$nombre");
+    $objResponse->assign("codigo", "value", $ln["codigo"]);
+    $objResponse->assign("calle_principal", "value", $ln["calle_principal"]);
+    $objResponse->assign("calle_secundaria", "value", $ln["calle_secundaria"]);
+    $objResponse->assign("nro", "value", $ln["nro"]);
+    $objResponse->assign("referencia", "value", $ln["referencia"]);
+    $objResponse->assign("codigo_ciudad", "value", $ln["codigo_ciudad"]);
+    $objResponse->assign("codigo_candidato", "value", $ln["codigo_candidato"]);
 
 
     return $objResponse;
@@ -234,7 +224,7 @@ function consultar($form) {
     $objDB->getConexion();
 
     $sql = " select *    from direccion 
-    where  XXXXXXXXXXXX  like '%$query%' ";
+    where  concat(calle_principal,' ', calle_secundaria ,' ', referencia)  like '%$query%' ";
 
     $result = $objDB->query($sql);
     $numCols = $objDB->getNumCols();
@@ -272,18 +262,13 @@ function consultar($form) {
 }
 
 $xajax->register(XAJAX_FUNCTION, "validarForm");
-
 $xajax->register(XAJAX_FUNCTION, "ingresar");
-
 $xajax->register(XAJAX_FUNCTION, "actualizar");
-
 $xajax->register(XAJAX_FUNCTION, "eliminar");
-
 $xajax->register(XAJAX_FUNCTION, "limpiar");
-
 $xajax->register(XAJAX_FUNCTION, "confirmarEliminarForm");
-
 $xajax->register(XAJAX_FUNCTION, "consultar");
-
 $xajax->register(XAJAX_FUNCTION, "seleccionar");
+$xajax->register(XAJAX_FUNCTION, "verProvincia");
+$xajax->register(XAJAX_FUNCTION, "verCiudad");
 ?>

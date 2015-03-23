@@ -30,8 +30,5 @@
         <script type="text/javascript" src="./lib/modal-message/js/modal-message.js"></script>
         <script type="text/javascript" src="./lib/modal-message/js/ajax-dynamic-content.js"></script>
         
-        <link rel="stylesheet" type="text/css" href="./lib/calendar/epoch_styles.css" />
-        <script type="text/javascript" src="./lib/calendar/epoch_classes.js"></script>
-        
     </head> 
    

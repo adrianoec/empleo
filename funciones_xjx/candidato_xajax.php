@@ -7,71 +7,6 @@ $cmbGrupoEtnico = $objFunciones->generarCombo("cmbGrupoEtnico", $sqlgrupo, "", t
 $sqldisponibilidad = "select codigo, nombre  from  disponibilidad ";
 $cmbDisponibilidad = $objFunciones->generarCombo("cmbDisponibilidad", $sqldisponibilidad, "", true, false, "", "");
 
-function formDireccion($codigo=0) {
-
-    if($codigo>0){
-        
-    }else{
-        $p="";
-        $s="";
-        $n="";
-        $r="";
-        $p="";
-    }
-    $html = "<form id=\'formdireccion\' name=\'formdireccion\' >" .
-            "<table border=\'0\' align=\'center\'>" .
-            "<tr>" .
-            "<td>" .
-            "Calle Principal" .
-            "</td>" .
-            "<td>" .
-            "<input type=\'text\' name=\'txtPrincipal\' id=\'txtPrincipal\' value=\'$p\' />" .
-            "</td>" .
-            "</tr>" .
-            "<tr>" .
-            "<td>" .
-            "Calle Secundaria" .
-            "</td>" .
-            "<td>" .
-            "<input type=\'text\' name=\'txtSecundaria\' id=\'txtSecundaria\' value=\'$s\' />" .
-            "</td>" .
-            "</tr>" .
-            "<tr>" .
-            "<td>" .
-            "Nro" .
-            "</td>" .
-            "<td>" .
-            "<input type=\'text\' name=\'txtnro\' id=\'txtnro\' value=\'$n\' />" .
-            "</td>" .
-            "</tr>" .
-            "<tr>" .
-            "<td>" .
-            "Referencia" .
-            "</td>" .
-            "<td>" .
-            "<input type=\'text\' name=\'txtReferencia\' id=\'txtReferencia\' value=\'$r\' />" .
-            "</td>" .
-            "</tr>" .
-            "<tr>" .
-            "<td>" .
-            "Ciudad" .
-            "</td>" .
-            "<td>" .
-            "</td>" .
-            "</tr>" .
-            "<tr>" .
-            "<td >" .
-            "<input type=\'button\' name=\'btnGuardar\' id=\'btnGuardar\' value=\'Guardar\' onclick=xajax_validarForm(xajax.getFormValues(\'formdireccion\')) />" .
-            "</td>" .
-            "<td >" .
-            "<input type=\'button\' name=\'btnCerrar\' id=\'btnCerrar\' value=\'Cerrar\' onclick=\'closeMessage();return false\' />" .
-            "</td>".
-            "</tr>" .
-            "</table>" .
-            "</form>";
-    return $html;
-}
-
 function validarForm($form, $opcion) {
 
     $codigo = strtoupper(trim($form['codigo']));
@@ -83,12 +18,10 @@ function validarForm($form, $opcion) {
     $movil = strtoupper(trim($form['movil']));
     $archivo = strtoupper(trim($form['archivo']));
     $codigo_grupo_etnico = strtoupper(trim($form['cmbGrupoEtnico']));
-    $disponibilidad = strtoupper(trim($form['disponibilidad']));
+    $disponibilidad = strtoupper(trim($form['cmbDisponibilidad']));
     $objResponse = new xajaxResponse();
     $msg = "";
-    if (strcasecmp($codigo, '') == 0 or strcasecmp($codigo, 'seleccione') == 0) {
-        $msg.="\nINGRESE CODIGO...";
-    }
+
     if (strcasecmp($nombres, '') == 0 or strcasecmp($nombres, 'seleccione') == 0) {
         $msg.="\nINGRESE NOMBRES...";
     }
@@ -105,7 +38,7 @@ function validarForm($form, $opcion) {
         $msg.="\nINGRESE TELEFONO...";
     }
     if (strcasecmp($archivo, '') == 0 or strcasecmp($archivo, 'seleccione') == 0) {
-        $msg.="\nINGRESE ARCHIVO...";
+        //$msg.="\nINGRESE ARCHIVO...";
     }
     if (strcasecmp($codigo_grupo_etnico, '') == 0 or strcasecmp($codigo_grupo_etnico, 'seleccione') == 0) {
         $msg.="\nSELECCIONE GRUPO ETNICO...";
@@ -114,7 +47,8 @@ function validarForm($form, $opcion) {
         $msg.="\nINGRESE DISPONIBILIDAD...";
     }
 
-    $objResponse->alert(print_r($form, true));
+    //$objResponse->alert(print_r($form, true));
+
     if (strlen(trim($msg)) > 0) {
         $objResponse->alert($msg);
         return $objResponse;
@@ -136,19 +70,30 @@ function ingresar($form) {
     $genero = strtoupper(trim($form['genero']));
     $telefono = strtoupper(trim($form['telefono']));
     $movil = strtoupper(trim($form['movil']));
-    $codigo_direccion = strtoupper(trim($form['codigo_direccion']));
     $archivo = strtoupper(trim($form['archivo']));
-    $codigo_grupo_etnico = strtoupper(trim($form['codigo_grupo_etnico']));
-    $disponibilidad = strtoupper(trim($form['disponibilidad']));
+    $codigo_grupo_etnico = strtoupper(trim($form['cmbGrupoEtnico']));
+    $disponibilidad = strtoupper(trim($form['cmbDisponibilidad']));
 
     $objDB = new Database();
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
     $objResponse = new xajaxResponse();
-    $sqlInsert = "insert into candidato (nombres,apellidos,fecha_nacimiento,genero,telefono,movil,codigo_direccion,archivo,codigo_grupo_etnico,disponibilidad) values";
-    $sqlInsert .= "('$nombres','$apellidos','$fecha_nacimiento','$genero','$telefono','$movil','$codigo_direccion','$archivo','$codigo_grupo_etnico','$disponibilidad');";
+    $sqlInsert = "insert into candidato (nombres,apellidos,fecha_nacimiento,genero,telefono,movil,archivo,codigo_grupo_etnico,disponibilidad) values";
+    $sqlInsert .= "('$nombres','$apellidos','$fecha_nacimiento','$genero','$telefono','$movil','$archivo','$codigo_grupo_etnico','$disponibilidad');";
     $rs = $objDB->query($sqlInsert);
-    $objResponse->alert("Registrado...");
+    if ($rs) {
+        $sqlid = "select last_insert_id() as last;";
+        $rs1 = $objDB->query($sqlInsert);
+
+        $arr = $objDB->fetch_array($rs1);
+        $cod = trim($arr["last"]);
+        if ($cod > 0) {
+            $_SESSION["codigo_candidato"] = $cod;
+        }
+        $objResponse->alert("Registrado...");
+    } else {
+        $objResponse->alert("Error:\n" . $objDB->getLastError());
+    }
     return $objResponse;
 }
 
@@ -239,8 +184,8 @@ function limpiar($form) {
     $objResponse->assign("movil", "value", "");
     $objResponse->assign("codigo_direccion", "value", "");
     $objResponse->assign("archivo", "value", "");
-    $objResponse->assign("codigo_grupo_etnico", "value", "");
-    $objResponse->assign("disponibilidad", "value", "");
+    $objResponse->assign("cmbGrupoEtnico", "value", "");
+    $objResponse->assign("cmbDisponibilidad", "value", "");
 
     return $objResponse;
 }
@@ -266,16 +211,19 @@ function seleccionar($id) {
     $objResponse->assign("genero", "value", $ln["genero"]);
     $objResponse->assign("telefono", "value", $ln["telefono"]);
     $objResponse->assign("movil", "value", $ln["movil"]);
-    $objResponse->assign("codigo_direccion", "value", $ln["codigo_direccion"]);
+
     $objResponse->assign("archivo", "value", $ln["archivo"]);
-    $objResponse->assign("codigo_grupo_etnico", "value", $ln["codigo_grupo_etnico"]);
-    $objResponse->assign("disponibilidad", "value", $ln["disponibilidad"]);
-
-
+    $objResponse->assign("cmbGrupoEtnico", "value", $ln["codigo_grupo_etnico"]);
+    $objResponse->assign("cmbDisponibilidad", "value", $ln["disponibilidad"]);
+    $objResponse->call("xajax_consultarDirecciones", $id);
+    $objResponse->call("xajax_consultarEstudios", $id);
+    $objResponse->call("xajax_consultarExperiencia", $id);
+    $_SESSION["codigo_candidato"] = $id;
     return $objResponse;
 }
 
 function consultar($form) {
+    $_SESSION["codigo_candidato"] = 0;
     $query = trim($form["txtConsulta"]);
     $objResponse = new xajaxResponse();
 
@@ -318,7 +266,148 @@ function consultar($form) {
     $tabla.="</tbody></table> </td></tr></table> ";
     $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
     $objResponse->assign("dvRespuesta", "innerHTML", "$tabla");
-    $objResponse->alert($sql);
+    //$objResponse->alert($sql);
+    return $objResponse;
+}
+
+function consultarDirecciones($codigo) {
+    $objResponse = new xajaxResponse();
+    $objDB = new Database();
+    $objDB->setParametrosBD(HOST, BASE, USER, PWD);
+    $objDB->getConexion();
+
+    $sql = " select *    from direccion 
+    where  codigo_candidato  = '$codigo' ";
+
+
+    $result = $objDB->query($sql);
+    $numCols = $objDB->getNumCols();
+
+    $nuevo = "<img src='" . HOME . "imagenes/page_white_text.png'/>";
+    $nuevoLnk = " style='cursor:pointer' onclick = 'xajax_nuevo()' ";
+
+    $tabla = "<table border='0' width='70%'> <tr><td> <table border='0' align ='center' class='tablesorter' cellspacing='1'><thead><tr>";
+    $arrTi = $objDB->field_name($result);
+
+
+
+    foreach ($arrTi as $ln) {
+        $campo = $ln;
+        $tabla .="<th>$campo</th>";
+    }
+    $tabla.=" <th colspan='2' $nuevoLnk >$nuevo</th> </tr></thead><tbody>";
+    while ($ln = $objDB->fetch_array($result)) {
+        $id = $ln[0];
+        $tb = "<tr>";
+        for ($i = 0; $i < $numCols; $i++) {
+            $dato = $ln[$i];
+            $tb.="<td id = 'dv_$i'.'_$id'>$dato</td>";
+        }
+        $actualizar = "<img src='" . HOME . "imagenes/page_white_edit.png'/>";
+        $actalizarLnk = " style='cursor:pointer' onclick=\"return popitup('./direccion_aux.php?codigo=$id', 'direccion', 300, 400);\" ";
+        $eliminar = "<img src='" . HOME . "imagenes/cross.png'/>";
+        $eliminarLnk = " style='cursor:pointer' onclick = 'xajax_confirmarEliminarDireccion($id)' ";
+        $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
+    }
+    $tabla.="</tbody></table> </td></tr></table>";
+    $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    $objResponse->assign("dvDireccion", "innerHTML", "$tabla");
+
+    return $objResponse;
+}
+
+function consultarEstudios($codigo) {
+    $objResponse = new xajaxResponse();
+
+    $objDB = new Database();
+    $objDB->setParametrosBD(HOST, BASE, USER, PWD);
+    $objDB->getConexion();
+
+    $sql = " select *    from estudio 
+    where  codigo_candidato  = '$codigo' ";
+
+    $result = $objDB->query($sql);
+    $numCols = $objDB->getNumCols();
+
+    $nuevo = "<img src='" . HOME . "imagenes/page_white_text.png'/>";
+    $nuevoLnk = " style='cursor:pointer' onclick = 'xajax_nuevo()' ";
+
+    $tabla = "<table border='0' width='70%'> <tr><td> <table border='0' align ='center' class='tablesorter' cellspacing='1'><thead><tr>";
+    $arrTi = $objDB->field_name($result);
+
+
+
+    foreach ($arrTi as $ln) {
+        $campo = $ln;
+        $tabla .="<th>$campo</th>";
+    }
+    $tabla.=" <th colspan='2' $nuevoLnk >$nuevo</th> </tr></thead><tbody>";
+    while ($ln = $objDB->fetch_array($result)) {
+        $id = $ln[0];
+        $tb = "<tr>";
+        for ($i = 0; $i < $numCols; $i++) {
+            $dato = $ln[$i];
+            $tb.="<td id = 'dv_$i'.'_$id'>$dato</td>";
+        }
+        $actualizar = "<img src='" . HOME . "imagenes/page_white_edit.png'/>";
+        //$actalizarLnk = " style='cursor:pointer' onclick = 'xajax_seleccionar($id)' ";
+        $actalizarLnk = " style='cursor:pointer' onclick=\"return popitup('./estudio_aux.php?codigo=$id', 'direccion', 300, 400);\" ";
+        $eliminar = "<img src='" . HOME . "imagenes/cross.png'/>";
+        $eliminarLnk = " style='cursor:pointer' onclick = 'xajax_confirmarEliminarForm($id)' ";
+        $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
+    }
+    $tabla.="</tbody></table> </td></tr></table> ";
+    $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    $objResponse->assign("dvEstudios", "innerHTML", "$tabla");
+
+    return $objResponse;
+}
+
+function consultarExperiencia($codigo) {
+    $query = trim($form["txtConsulta"]);
+    $objResponse = new xajaxResponse();
+
+    $objDB = new Database();
+    $objDB->setParametrosBD(HOST, BASE, USER, PWD);
+    $objDB->getConexion();
+
+    $sql = " select *    from experiencia 
+    where  codigo_candidato  = '$codigo' ";
+
+    $result = $objDB->query($sql);
+    $numCols = $objDB->getNumCols();
+
+    $nuevo = "<img src='" . HOME . "imagenes/page_white_text.png'/>";
+    $nuevoLnk = " style='cursor:pointer' onclick = 'xajax_nuevo()' ";
+
+    $tabla = "<table border='0' width='70%'> <tr><td> <table border='0' align ='center' class='tablesorter' cellspacing='1'><thead><tr>";
+    $arrTi = $objDB->field_name($result);
+
+
+
+    foreach ($arrTi as $ln) {
+        $campo = $ln;
+        $tabla .="<th>$campo</th>";
+    }
+    $tabla.=" <th colspan='2' $nuevoLnk >$nuevo</th> </tr></thead><tbody>";
+    while ($ln = $objDB->fetch_array($result)) {
+        $id = $ln[0];
+        $tb = "<tr>";
+        for ($i = 0; $i < $numCols; $i++) {
+            $dato = $ln[$i];
+            $tb.="<td id = 'dv_$i'.'_$id'>$dato</td>";
+        }
+        $actualizar = "<img src='" . HOME . "imagenes/page_white_edit.png'/>";
+        $actalizarLnk = " style='cursor:pointer' onclick = 'xajax_seleccionar($id)' ";
+        $actalizarLnk = " style='cursor:pointer' onclick=\"return popitup('./experiencia_aux.php?codigo=$id', 'direccion', 400, 400);\" ";
+        $eliminar = "<img src='" . HOME . "imagenes/cross.png'/>";
+        $eliminarLnk = " style='cursor:pointer' onclick = 'xajax_confirmarEliminarForm($id)' ";
+        $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
+    }
+    $tabla.="</tbody></table> </td></tr></table> ";
+    $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    $objResponse->assign("dvExperiencia", "innerHTML", "$tabla");
+
     return $objResponse;
 }
 
@@ -330,4 +419,8 @@ $xajax->register(XAJAX_FUNCTION, "limpiar");
 $xajax->register(XAJAX_FUNCTION, "confirmarEliminarForm");
 $xajax->register(XAJAX_FUNCTION, "consultar");
 $xajax->register(XAJAX_FUNCTION, "seleccionar");
+
+$xajax->register(XAJAX_FUNCTION, "consultarDirecciones");
+$xajax->register(XAJAX_FUNCTION, "consultarEstudios");
+$xajax->register(XAJAX_FUNCTION, "consultarExperiencia");
 ?>
