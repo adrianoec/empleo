@@ -12,6 +12,7 @@ function validarForm($form, $opcion) {
     $codigo = strtoupper(trim($form['codigo']));
     $nombres = strtoupper(trim($form['nombres']));
     $apellidos = strtoupper(trim($form['apellidos']));
+    $cedula = strtoupper(trim($form['cedula']));
     $fecha_nacimiento = strtoupper(trim($form['fecha_nacimiento']));
     $genero = strtoupper(trim($form['genero']));
     $telefono = strtoupper(trim($form['telefono']));
@@ -21,12 +22,15 @@ function validarForm($form, $opcion) {
     $disponibilidad = strtoupper(trim($form['cmbDisponibilidad']));
     $objResponse = new xajaxResponse();
     $msg = "";
-
+//    $objResponse->alert(print_r($form, true));
     if (strcasecmp($nombres, '') == 0 or strcasecmp($nombres, 'seleccione') == 0) {
         $msg.="\nINGRESE NOMBRES...";
     }
     if (strcasecmp($apellidos, '') == 0 or strcasecmp($apellidos, 'seleccione') == 0) {
         $msg.="\nINGRESE APELLIDOS...";
+    }
+    if (strcasecmp($cedula, '') == 0 or strcasecmp($cedula, 'seleccione') == 0) {
+        $msg.="\nINGRESE CEDULA...";
     }
     if (strcasecmp($fecha_nacimiento, '') == 0 or strcasecmp($fecha_nacimiento, 'seleccione') == 0) {
         $msg.="\nINGRESE FECHA NACIMIENTO...";
@@ -54,74 +58,101 @@ function validarForm($form, $opcion) {
         return $objResponse;
     } else {
         if ($opcion == 0) { // inserta
-            $objResponse->call("xajax_ingresar", $form);
+            //$objResponse->call("xajax_ingresar", $form);
+            $objResponse->assign("btna", "value", "guardar");
+            $objResponse->script("document.form.submit();");
         } else { // actualizar
-            $objResponse->call("xajax_actualizar", $form);
+            //$objResponse->call("xajax_actualizar", $form);
+            $objResponse->assign("btna", "value", "actualizar");
+            $objResponse->script("document.form.submit();");
         }
     }
     return $objResponse;
 }
 
 function ingresar($form) {
+
+    $form = json_decode($form, true);
     $codigo = strtoupper(trim($form['codigo']));
     $nombres = strtoupper(trim($form['nombres']));
     $apellidos = strtoupper(trim($form['apellidos']));
+    $cedula = strtoupper(trim($form['cedula']));
     $fecha_nacimiento = strtoupper(trim($form['fecha_nacimiento']));
     $genero = strtoupper(trim($form['genero']));
     $telefono = strtoupper(trim($form['telefono']));
     $movil = strtoupper(trim($form['movil']));
-    $archivo = strtoupper(trim($form['archivo']));
+    $archivo = trim($form['archivo']);
+    $foto = trim($form['foto']);
     $codigo_grupo_etnico = strtoupper(trim($form['cmbGrupoEtnico']));
     $disponibilidad = strtoupper(trim($form['cmbDisponibilidad']));
 
     $objDB = new Database();
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
+
     $objResponse = new xajaxResponse();
-    $sqlInsert = "insert into candidato (nombres,apellidos,fecha_nacimiento,genero,telefono,movil,archivo,codigo_grupo_etnico,disponibilidad) values";
-    $sqlInsert .= "('$nombres','$apellidos','$fecha_nacimiento','$genero','$telefono','$movil','$archivo','$codigo_grupo_etnico','$disponibilidad');";
+    //$objResponse->alert(print_r($form, true));
+    $sqlInsert = "insert into candidato "
+            . "(nombres,apellidos,fecha_nacimiento,genero,telefono,movil,archivo,grupo_etnico,disponibilidad, cedula,foto) "
+            . "values"
+            . "('$nombres','$apellidos','$fecha_nacimiento','$genero','$telefono','$movil','$archivo','$codigo_grupo_etnico','$disponibilidad','$cedula', '$foto');";
     $rs = $objDB->query($sqlInsert);
     if ($rs) {
         $sqlid = "select last_insert_id() as last;";
-        $rs1 = $objDB->query($sqlInsert);
-
+        $rs1 = $objDB->query($sqlid);
         $arr = $objDB->fetch_array($rs1);
         $cod = trim($arr["last"]);
         if ($cod > 0) {
             $_SESSION["codigo_candidato"] = $cod;
         }
         $objResponse->alert("Registrado...");
+        $objResponse->call("xajax_limpiar");
     } else {
         $objResponse->alert("Error:\n" . $objDB->getLastError());
     }
+
+
+
     return $objResponse;
 }
 
 function actualizar($form) {
+    $form = json_decode($form, true);
     $codigo = strtoupper(trim($form['codigo']));
     $nombres = strtoupper(trim($form['nombres']));
     $apellidos = strtoupper(trim($form['apellidos']));
+    $cedula = strtoupper(trim($form['cedula']));
     $fecha_nacimiento = strtoupper(trim($form['fecha_nacimiento']));
     $genero = strtoupper(trim($form['genero']));
     $telefono = strtoupper(trim($form['telefono']));
     $movil = strtoupper(trim($form['movil']));
     $codigo_direccion = strtoupper(trim($form['codigo_direccion']));
-    $archivo = strtoupper(trim($form['archivo']));
+    $archivo = trim($form['archivo']);
+    $foto = trim($form['foto']);
     $codigo_grupo_etnico = strtoupper(trim($form['codigo_grupo_etnico']));
     $disponibilidad = strtoupper(trim($form['disponibilidad']));
     $objDB = new Database();
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
     $objResponse = new xajaxResponse();
+
+    $uploads = "";
+    if (strlen(trim($archivo)) > 5) {
+        $uploads.=", archivo= '$archivo' ";
+    }
+    if (strlen(trim($foto)) > 5) {
+        $uploads.=" , foto= '$foto'";
+    }
+
     $sqlUpdate = "update  candidato set  nombres= '$nombres'
     , apellidos= '$apellidos'
+    , cedula = '$cedula'
     , fecha_nacimiento= '$fecha_nacimiento'
     , genero= '$genero'
     , telefono= '$telefono'
     , movil= '$movil'
-    , codigo_direccion= '$codigo_direccion'
-    , archivo= '$archivo'
-    , codigo_grupo_etnico= '$codigo_grupo_etnico'
+    $uploads
+    , grupo_etnico= '$codigo_grupo_etnico'
     , disponibilidad= '$disponibilidad'
      where  codigo= '$codigo'
     ";
@@ -130,37 +161,28 @@ function actualizar($form) {
 
     if ($rs == true) {
         $objResponse->alert("Actualizado...");
+        $objResponse->call("xajax_limpiar");
     } else {
-        $objResponse->alert("No se pudo actualizar los datos del Candidato");
+        $objResponse->alert("No se pudo actualizar los datos del Candidato\nError:\n",$objDB->getLastError()."\n".$sqlUpdate);
     }
     return $objResponse;
 }
 
-function confirmarEliminarForm($form) {
+function confirmarEliminarForm($id) {
     $objResponse = new xajaxResponse();
     $objResponse->confirmCommands(1, "Deseas eliminar el registro?");
-    $objResponse->call("xajax_eliminar", $form);
+    $objResponse->call("xajax_eliminar", $id);
     return $objResponse;
 }
 
-function eliminar($form) {
-    $codigo = strtoupper(trim($form['codigo']));
-    $nombres = strtoupper(trim($form['nombres']));
-    $apellidos = strtoupper(trim($form['apellidos']));
-    $fecha_nacimiento = strtoupper(trim($form['fecha_nacimiento']));
-    $genero = strtoupper(trim($form['genero']));
-    $telefono = strtoupper(trim($form['telefono']));
-    $movil = strtoupper(trim($form['movil']));
-    $codigo_direccion = strtoupper(trim($form['codigo_direccion']));
-    $archivo = strtoupper(trim($form['archivo']));
-    $codigo_grupo_etnico = strtoupper(trim($form['codigo_grupo_etnico']));
-    $disponibilidad = strtoupper(trim($form['disponibilidad']));
+function eliminar($id) {
+
     $objResponse = new xajaxResponse();
     $objDB = new Database();
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
     $objResponse = new xajaxResponse();
-    $sqlUpdate = "update  candidato set activo=0 where  codigo= '$codigo'";
+    $sqlUpdate = "update  candidato set estado=0 where  codigo= '$id'";
     $rs = $objDB->query($sqlUpdate);
     if ($rs == true) {
         $objResponse->alert("Desactivado...");
@@ -178,12 +200,14 @@ function limpiar($form) {
     $objResponse->assign("codigo", "value", "");
     $objResponse->assign("nombres", "value", "");
     $objResponse->assign("apellidos", "value", "");
+    $objResponse->assign("cedula", "value", "");
     $objResponse->assign("fecha_nacimiento", "value", "");
     $objResponse->assign("genero", "value", "");
     $objResponse->assign("telefono", "value", "");
     $objResponse->assign("movil", "value", "");
     $objResponse->assign("codigo_direccion", "value", "");
     $objResponse->assign("archivo", "value", "");
+    $objResponse->assign("foto", "src", "");
     $objResponse->assign("cmbGrupoEtnico", "value", "");
     $objResponse->assign("cmbDisponibilidad", "value", "");
 
@@ -207,13 +231,15 @@ function seleccionar($id) {
     $objResponse->assign("codigo", "value", $ln["codigo"]);
     $objResponse->assign("nombres", "value", $ln["nombres"]);
     $objResponse->assign("apellidos", "value", $ln["apellidos"]);
+    $objResponse->assign("cedula", "value", $ln["cedula"]);
     $objResponse->assign("fecha_nacimiento", "value", $ln["fecha_nacimiento"]);
     $objResponse->assign("genero", "value", $ln["genero"]);
     $objResponse->assign("telefono", "value", $ln["telefono"]);
     $objResponse->assign("movil", "value", $ln["movil"]);
 
-    $objResponse->assign("archivo", "value", $ln["archivo"]);
-    $objResponse->assign("cmbGrupoEtnico", "value", $ln["codigo_grupo_etnico"]);
+    $objResponse->assign("hoja", "value", $ln["archivo"]);
+    $objResponse->assign("foto", "src", $ln["foto"]);
+    $objResponse->assign("cmbGrupoEtnico", "value", $ln["grupo_etnico"]);
     $objResponse->assign("cmbDisponibilidad", "value", $ln["disponibilidad"]);
     $objResponse->call("xajax_consultarDirecciones", $id);
     $objResponse->call("xajax_consultarEstudios", $id);
@@ -232,7 +258,7 @@ function consultar($form) {
     $objDB->getConexion();
 
     $sql = " select *    from candidato 
-    where  concat(nombres,' ',apellidos)  like '%$query%' ";
+    where  concat(nombres,' ',apellidos)  like '%$query%' and estado =1";
 
     $result = $objDB->query($sql);
     $numCols = $objDB->getNumCols();
@@ -260,7 +286,12 @@ function consultar($form) {
         $actualizar = "<img src='" . HOME . "imagenes/page_white_edit.png'/>";
         $actalizarLnk = " style='cursor:pointer' onclick = 'xajax_seleccionar($id)' ";
         $eliminar = "<img src='" . HOME . "imagenes/cross.png'/>";
-        $eliminarLnk = " style='cursor:pointer' onclick = 'xajax_confirmarEliminarForm($id)' ";
+        if ($_SESSION["pe"] == "0") {
+            $eliminarLnk = " style='cursor:pointer' title='no tiene permisos' ";
+        } else {
+            $eliminarLnk = " style='cursor:pointer' onclick = 'xajax_confirmarEliminarForm($id)' ";
+        }
+
         $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
     }
     $tabla.="</tbody></table> </td></tr></table> ";
