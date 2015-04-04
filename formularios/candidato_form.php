@@ -244,7 +244,7 @@ if ($_POST["btna"] == "actualizar") {
                             </td>
            
                             <td> 
-                                <input type="button" name="btnCancelar" id="btnCancelar" value="Cancelar" onclick="reset()" /> 
+                                <input type="button" name="btnCancelar" id="btnCancelar" value="Cancelar" onclick="xajax_limpiar(xajax.getFormValues('form'))" /> 
                             </td>
                         </tr>  
                     </table> 
@@ -260,7 +260,7 @@ if ($_POST["btna"] == "actualizar") {
         <td onclick="muestra_oculta('dvDireccion')" >Direcciones </td>
         <td align="right">
             <img src="imagenes/add.png" width="16" height="16" alt="add" 
-                 onclick="return popitup('./direccion_aux.php', 'estudio', 300, 400);
+                 onclick="return popitup('./direccion_aux.php', 'estudio', 400, 500);
                  "     
                  /> 
         </td>
@@ -277,7 +277,7 @@ if ($_POST["btna"] == "actualizar") {
         <td onclick="muestra_oculta('dvEstudios')" >Estudios Realizados</td>
         <td align="right">
             <img src="imagenes/add.png" width="16" height="16" alt="add" 
-                 onclick="return popitup('./estudio_aux.php', 'estudio', 300, 400);
+                 onclick="return popitup('./estudio_aux.php', 'estudio', 400, 500);
                  "     
                  /> 
         </td>
@@ -292,7 +292,7 @@ if ($_POST["btna"] == "actualizar") {
         <td onclick="muestra_oculta('dvExperiencia')" >Experiencia Laboral</td> 
         <td align="right">
             <img src="imagenes/add.png" width="16" height="16" alt="add" 
-                 onclick="return popitup('./experiencia_aux.php', 'estudio', 400, 400);
+                 onclick="return popitup('./experiencia_aux.php', 'estudio', 500, 500);
                  "     
                  /> 
         </td>

@@ -26,7 +26,7 @@ if ($_SESSION["pe"] == "0") {
 </table>
 <div id='dvConsulta' >
 
-    <form id='formQuery'><table align="center" class="campo" ><tr><td>Consultar:</td><td><input type='text' id='txtConsulta' name='txtConsulta' value='' /></td><td><input type='button' name='btnConsultar' id='btnConsultar' value='Consultar' onclick='xajax_consultar(xajax.getFormValues('formQuery'))' ></td></tr></table></form> 
+    <form id='formQuery'><table align="center" class="campo" ><tr><td>Consultar:</td><td><input type='text' id='txtConsulta' name='txtConsulta' value='' /></td><td><input type='button' name='btnConsultar' id='btnConsultar' value='Consultar' onclick="xajax_consultar(xajax.getFormValues('formQuery'))" ></td></tr></table></form> 
     <center> 
         <div id='dvRespuesta'> </div> 
         <div id='dvPaginacion'></div> 
@@ -43,9 +43,10 @@ if ($_SESSION["pe"] == "0") {
                 </td> 
                 <td><div id='dvReqCODIGO'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' name='codigo' id='codigo' value='' onfocus='' size='40'> 
+                    <input type='text' name='codigo' id='codigo' value='' onfocus='' size='40' readonly="true"> 
                 </td>
-
+            </tr>
+            <tr>
                 <td> 
                     RAZON SOCIAL 
                 </td> 
@@ -60,9 +61,10 @@ if ($_SESSION["pe"] == "0") {
                 </td> 
                 <td><div id='dvReqCODIGO_DIRECCION'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' name='codigo_direccion' id='codigo_direccion' value='' onfocus='' size='40'> 
+                    <input type='text' name='direccion' id='direccion' value='' onfocus='' size='40'> 
                 </td>
-
+            </tr>
+            <tr>
                 <td> 
                     REPRESENTANTE 
                 </td> 
@@ -79,7 +81,8 @@ if ($_SESSION["pe"] == "0") {
                 <td> 
                     <input type='text' name='email' id='email' value='' onfocus='' size='40'> 
                 </td>
-
+            </tr>
+            <tr>
                 <td> 
                     TELEFONO1 
                 </td> 
@@ -103,19 +106,12 @@ if ($_SESSION["pe"] == "0") {
 
                     <table align='center'> 
                         <tr>
-
                             <td> 
                                 <input type="button" name="btnGuardar" id="btnGuardar" value="Guardar" onclick="xajax_validarForm(xajax.getFormValues('form'), 0)" <?php echo $pg; ?> /> 
                             </td>
-
                             <td> 
                                 <input type="button" name="btnActualizar" id="btnActualizar" value="Actualizar" onclick="xajax_validarForm(xajax.getFormValues('form'), 1)" <?php echo $pa; ?> /> 
                             </td>
-
-                            <td> 
-                                <input type="button" name="btnEliminar" id="btnEliminar" value="Eliminar" onclick="xajax_confirmarEliminarForm(xajax.getFormValues('form'))" <?php echo $pe; ?> /> 
-                            </td>
-
                             <td> 
                                 <input type="button" name="btnCancelar" id="btnCancelar" value="Cancelar" onclick="xajax_limpiar(xajax.getFormValues('form'))" /> 
                             </td>

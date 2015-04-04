@@ -34,4 +34,4 @@
         <script type="text/javascript" src="./lib/calendar/epoch_classes.js"></script>
         
     </head> 
-   
+    <center> <img src="/imagenes/logojuventudempleo.jpg"/> </center>

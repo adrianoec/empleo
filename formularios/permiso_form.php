@@ -46,11 +46,11 @@ if ($_SESSION["pc"]=="1" and $_SESSION["pa"] == "1" and $_SESSION["pg"] == "1" a
 
 $perfil = perfiles("");
 ?>
-<table width="100%" class="acordeon">
+<center><table width="70%" class="acordeon">
 	<tr>
             <td onclick="muestra_oculta('dvFormulario sss')" style="cursor: pointer"><br/></td>
 	</tr>
-</table>
+</table></center>
 <div id='dvFormulario' >
 	<form name='form' id='form' action=''>
 		<table   align='center' class="campo">
@@ -71,9 +71,10 @@ $perfil = perfiles("");
 		</table>
 	</form>
 </div>
-
-<div id='dvRespuesta' >
+<center>
+<div id='dvRespuesta'>
 
 </div>
 
 <div id='dvRespuesta2' ></div>
+</center>

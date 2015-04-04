@@ -15,5 +15,15 @@ include_once (HOME . 'include/db.class.php');
 include_once (HOME . 'include/xajax_conf_process.php');
 include_once (HOME . 'include/cabecera.php');
 include_once (HOME . 'include/menu.php');
+?>
+
+<div id="">
+    <center>
+    <img src="imagenes/oficios-masculinos.jpg" width="700" height="525" alt="oficios-masculinos"/>
+    </center>
+</div>
+<?php
+
+
 include_once (HOME . 'include/pie.php');
 ?>

@@ -15,11 +15,11 @@ if($_SESSION["pe"]=="0"){
     $pe ="disabled=\"true\"";
 }
 ?>
-<table class ='acordeon' width="100%">
+<center><table class ='acordeon' width="70%">
     <tr>
         <td onclick="muestra_oculta('dvFormulario')" style="cursor: pointer">Formulario</td>
     </tr>
-</table>
+</table></center>
 <div id='dvFormulario' >
     <form name='form' id='form' action=''>
         <table border='' align='center' class="campo" >
@@ -117,11 +117,11 @@ if($_SESSION["pe"]=="0"){
         </table>
     </form>
 </div>
-<table width="100%" style="cursor: pointer" class="acordeon">
+<center><table width="70%" style="cursor: pointer" class="acordeon">
     <tr>
         <td onclick="muestra_oculta('dvConsulta')"  >Consulta</td>
     </tr>
-</table>
+</table></center>
 <div id='dvConsulta' >
 
     <form id='formQuery'>

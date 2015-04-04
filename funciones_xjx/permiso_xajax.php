@@ -16,8 +16,8 @@ function actualizar($opcion, $codigo, $value) {
     //$objResponse->alert(" $opcion, $codigo ,$value ");
     //acceso_menu, acceso_consulta, acceso_guardar, acceso_actualizar, acceso_eliminar
     $arrdato = explode("x", $codigo);
-    $cod_pag= $arrdato[1];
-    $cod_rol= $arrdato[0];
+    $cod_pag = $arrdato[1];
+    $cod_rol = $arrdato[0];
     if ($opcion == 1) {
         $sqlUpdate = "update  empleo.permiso set  acceso_menu = '$value' where  codigo_rol='$cod_rol' and codigo_pagina= '$cod_pag'; ";
     } elseif ($opcion == 2) {
@@ -31,7 +31,7 @@ function actualizar($opcion, $codigo, $value) {
     }
 
     //$_SESSION["sql"].=$sqlUpdate."<br/>";
-     //   $objResponse->assign("dvRespuesta2", "innerHTML", $_SESSION["sql"]);
+    //   $objResponse->assign("dvRespuesta2", "innerHTML", $_SESSION["sql"]);
     $rs = $objDB->query($sqlUpdate);
     $opciones = "chk_" . $opcion . "_$codigo";
     $objResponse->assign($opciones, "value", $value);
@@ -39,7 +39,7 @@ function actualizar($opcion, $codigo, $value) {
 }
 
 function consultar($form) {
-    
+
     $query = trim($form["cmbPerfil"]);
     $objResponse = new xajaxResponse();
 
@@ -47,8 +47,10 @@ function consultar($form) {
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
 
-    
-    $sql = "select  a.codigo_rol, a.codigo_pagina , '' as perfil, b.pagina, a.acceso_menu, a.acceso_consulta, a.acceso_guardar, a.acceso_actualizar, a.acceso_eliminar 
+
+    $sql = "select  a.codigo_rol as id_rol, a.codigo_pagina as id_pagina , '' as perfil, b.pagina, 
+        a.acceso_menu as menu, a.acceso_consulta as consulta , a.acceso_guardar as guardar , 
+        a.acceso_actualizar as actualizar, a.acceso_eliminar as eliminar 
     from empleo.permiso as a inner join empleo.pagina as b
     on a.codigo_pagina = b.codigo 
     and a.estado=1
@@ -58,10 +60,11 @@ function consultar($form) {
     $result = $objDB->query($sql);
     $numCols = $objDB->getNumCols();
 
-    $nuevo = "<img src='" . HOME . "imagenes/page_white_text.png'/>";
-    $nuevoLnk = " style='cursor:pointer' onclick = 'xajax_nuevo()' ";
-
-    $tabla = "<form name='fadm' id='fadm'> <table border='0' align ='center' class='tablesorter' cellspacing='1'><thead><tr>";
+ 
+    $tabla = "<form name='fadm' id='fadm'> "
+            . "<table width='70%'><tr><td>"
+            . "<table border='0' align ='center' class='tablesorter' cellspacing='1' >"
+            . "<thead><tr>";
     $arrTi = $objDB->field_name($result);
 
 
@@ -70,9 +73,9 @@ function consultar($form) {
         $campo = $ln;
         $tabla .="<th>$campo</th>";
     }
-    $tabla.=" <th colspan='2' $nuevoLnk >$nuevo</th> </tr></thead><tbody>";
+    $tabla.=" </tr></thead><tbody>";
     while ($ln = $objDB->fetch_array($result)) {
-        $id = $ln[0]."x".$ln[1];
+        $id = $ln[0] . "x" . $ln[1];
         $tb = "<tr>";
         for ($i = 0; $i < $numCols; $i++) {
             $dato = $ln[$i];
@@ -115,10 +118,10 @@ function consultar($form) {
                 $tb.="<td id = 'dv_$i'.'_$id'>$dato</td>";
             }
         }
-        $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
+        $tabla.=$tb . "   </tr>";
     }
-    $tabla.="</tbody> </table> </form>";
-    
+    $tabla.="</tbody> </table> </td></tr></table></form>";
+
     $objResponse->assign("dvRespuesta", "innerHTML", "$tabla");
     $objResponse->script('loadTabla();');
     return $objResponse;
@@ -131,7 +134,7 @@ function perfiles($selected) {
     $objDB->getConexion();
 
     $sql = "select * from empleo.rol  where  estado = 1";
-    return $objFun->generarCombo("cmbPerfil", $sql, "", true, false, '', ""); 
+    return $objFun->generarCombo("cmbPerfil", $sql, "", true, false, '', "");
     //comboDatoEnlace($objDB, "cmbPerfil", $sql, "", 0, 0, $selected);
 }
 

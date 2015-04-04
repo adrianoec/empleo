@@ -1,52 +1,47 @@
 <?php
 
+$aut_usuario = $_SESSION["aut_usuario"];
+$aut_perfil = $_SESSION["aut_perfil"];
+$where = "";
+if ($aut_perfil != "1") {
+    $where.=" and usuario='$aut_usuario' ";
+}
+
 $objFunciones = new Funciones();
-$sqlgrupo = "select codigo, razon_social  from  empresa ";
+$sqlgrupo = "select codigo, razon_social  from  " . SCHEMA . ".empresa where estado = 1 $where ";
 $cmbEmpresa = $objFunciones->generarCombo("cmbEmpresa", $sqlgrupo, "", true, false, "", "");
 
-$sqlestado = "select codigo, nombre  from  estado ";
+$sqlestado = "select codigo, nombre  from  " . SCHEMA . ".estado ";
 $cmbEstado = $objFunciones->generarCombo("cmbEstado", $sqlestado, "", true, false, "", "");
 
-$sqlduracion = "select codigo, nombre  from  duracion_contrato ";
+$sqlduracion = "select codigo, nombre  from  " . SCHEMA . ".duracion_contrato ";
 $cmbDuracion = $objFunciones->generarCombo("cmbDuracion", $sqlduracion, "", true, false, "", "");
 
-$sqldisponibilidad = "select codigo, nombre  from  disponibilidad ";
+$sqldisponibilidad = "select codigo, nombre  from  " . SCHEMA . ".disponibilidad ";
 $cmbDisponibilidad = $objFunciones->generarCombo("cmbDisponibilidad", $sqldisponibilidad, "", true, false, "", "");
 
 function validarForm($form, $opcion) {
     $codigo = strtoupper(trim($form['codigo']));
-
     $nombre = strtoupper(trim($form['nombre']));
-
     $descripcion = strtoupper(trim($form['descripcion']));
-
     $sueldo = strtoupper(trim($form['sueldo']));
-
-    $codigo_empresa = strtoupper(trim($form['codigo_empresa']));
-
-    $estado = strtoupper(trim($form['estado']));
+    $codigo_empresa = strtoupper(trim($form['cmbEmpresa']));
 
     $fecha_vigencia = strtoupper(trim($form['fecha_vigencia']));
-
-    $duracion_contrato = strtoupper(trim($form['duracion_contrato']));
-
+    $duracion_contrato = strtoupper(trim($form['cmbDuracion']));
     $localizacion = strtoupper(trim($form['localizacion']));
-
-    $disponibilidad = strtoupper(trim($form['disponibilidad']));
-
+    $disponibilidad = strtoupper(trim($form['cmbDisponibilidad']));
     $fecha_publicacion = strtoupper(trim($form['fecha_publicacion']));
-
-
-    global $enlace, $objPaginacion, $objComun;
 
     $objResponse = new xajaxResponse();
 
     $msg = "";
 
-    if (strcasecmp($codigo, '') == 0 or strcasecmp($codigo, 'seleccione') == 0) {
-        $msg.="\nINGRESE CODIGO...";
+    if ($codigo != 0) {
+        if (strcasecmp($codigo, '') == 0 or strcasecmp($codigo, 'seleccione') == 0) {
+            $msg.="\nINGRESE CODIGO...";
+        }
     }
-
     if (strcasecmp($nombre, '') == 0 or strcasecmp($nombre, 'seleccione') == 0) {
         $msg.="\nINGRESE NOMBRE...";
     }
@@ -60,12 +55,10 @@ function validarForm($form, $opcion) {
     }
 
     if (strcasecmp($codigo_empresa, '') == 0 or strcasecmp($codigo_empresa, 'seleccione') == 0) {
-        $msg.="\nSELECCIONE CODIGO EMPRESA...";
+        $msg.="\nSELECCIONE EMPRESA...";
     }
 
-    if (strcasecmp($estado, '') == 0 or strcasecmp($estado, 'seleccione') == 0) {
-        $msg.="\nSELECCIONE ESTADO...";
-    }
+
 
     if (strcasecmp($fecha_vigencia, '') == 0 or strcasecmp($fecha_vigencia, 'seleccione') == 0) {
         $msg.="\nINGRESE FECHA VIGENCIA...";
@@ -102,134 +95,90 @@ function validarForm($form, $opcion) {
 
 function ingresar($form) {
 
-    $codigo = strtoupper(trim($form['codigo']));
-
     $nombre = strtoupper(trim($form['nombre']));
-
     $descripcion = strtoupper(trim($form['descripcion']));
-
     $sueldo = strtoupper(trim($form['sueldo']));
-
-    $codigo_empresa = strtoupper(trim($form['codigo_empresa']));
-
-    $estado = strtoupper(trim($form['estado']));
+    $codigo_empresa = strtoupper(trim($form['cmbEmpresa']));
 
     $fecha_vigencia = strtoupper(trim($form['fecha_vigencia']));
-
-    $duracion_contrato = strtoupper(trim($form['duracion_contrato']));
-
+    $duracion_contrato = strtoupper(trim($form['cmbDuracion']));
     $localizacion = strtoupper(trim($form['localizacion']));
-
-    $disponibilidad = strtoupper(trim($form['disponibilidad']));
-
+    $disponibilidad = strtoupper(trim($form['cmbDisponibilidad']));
     $fecha_publicacion = strtoupper(trim($form['fecha_publicacion']));
-
-
-    global $objPaginacion, $objComun;
 
     $objDB = new Database();
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
     $objResponse = new xajaxResponse();
+    $aut_usuario = $_SESSION["aut_usuario"];
+    $sqlInsert = "insert into " . SCHEMA . ".empleo (nombre,descripcion,sueldo,codigo_empresa,fecha_vigencia,duracion_contrato,localizacion,disponibilidad,fecha_publicacion, usuario) values";
 
-    $sqlInsert = "insert into empleo (nombre,descripcion,sueldo,codigo_empresa,estado,fecha_vigencia,duracion_contrato,localizacion,disponibilidad,fecha_publicacion) values";
-
-    $sqlInsert .= "('$nombre','$descripcion','$sueldo','$codigo_empresa','$estado','$fecha_vigencia','$duracion_contrato','$localizacion','$disponibilidad','$fecha_publicacion');";
+    $sqlInsert .= "('$nombre','$descripcion','$sueldo','$codigo_empresa','$fecha_vigencia','$duracion_contrato','$localizacion','$disponibilidad','$fecha_publicacion', '$aut_usuario');";
 
     $rs = $objDB->query($sqlInsert);
 
-    $objResponse->alert("Registrado...");
+
+    if ($rs == true) {
+        $objResponse->alert("Registrado...");
+        $objResponse->call("xajax_limpiar");
+    } else {
+        $objResponse->alert("No se pudo registrar los datos del Empleo\nError:\n", $objDB->getLastError());
+    }
+
     return $objResponse;
 }
 
 function actualizar($form) {
 
     $codigo = strtoupper(trim($form['codigo']));
-
     $nombre = strtoupper(trim($form['nombre']));
-
     $descripcion = strtoupper(trim($form['descripcion']));
-
     $sueldo = strtoupper(trim($form['sueldo']));
-
-    $codigo_empresa = strtoupper(trim($form['codigo_empresa']));
-
-    $estado = strtoupper(trim($form['estado']));
-
+    $codigo_empresa = strtoupper(trim($form['cmbEmpresa']));
     $fecha_vigencia = strtoupper(trim($form['fecha_vigencia']));
-
-    $duracion_contrato = strtoupper(trim($form['duracion_contrato']));
-
+    $duracion_contrato = strtoupper(trim($form['cmbDuracion']));
     $localizacion = strtoupper(trim($form['localizacion']));
-
-    $disponibilidad = strtoupper(trim($form['disponibilidad']));
-
+    $disponibilidad = strtoupper(trim($form['cmbDisponibilidad']));
     $fecha_publicacion = strtoupper(trim($form['fecha_publicacion']));
-
-
-    global $objPaginacion, $objComun;
 
     $objDB = new Database();
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
     $objResponse = new xajaxResponse();
 
-    $sqlUpdate = "update  empleo set  nombre= '$nombre'
-, descripcion= '$descripcion'
-, sueldo= '$sueldo'
-, codigo_empresa= '$codigo_empresa'
-, estado= '$estado'
-, fecha_vigencia= '$fecha_vigencia'
-, duracion_contrato= '$duracion_contrato'
-, localizacion= '$localizacion'
-, disponibilidad= '$disponibilidad'
-, fecha_publicacion= '$fecha_publicacion'
- where  codigo= '$codigo'
-";
+    $sqlUpdate = "update  " . SCHEMA . ".empleo set  nombre= '$nombre'
+    , descripcion= '$descripcion'
+    , sueldo= '$sueldo'
+    , codigo_empresa= '$codigo_empresa'
+    , fecha_vigencia= '$fecha_vigencia'
+    , duracion_contrato= '$duracion_contrato'
+    , localizacion= '$localizacion'
+    , disponibilidad= '$disponibilidad'
+    , fecha_publicacion= '$fecha_publicacion'
+     where  codigo= '$codigo'
+    ";
 
     $rs = $objDB->query($sqlUpdate);
 
-    $objResponse->alert("Actualizado...");
+
+    if ($rs == true) {
+        $objResponse->alert("Actualizado...");
+        $objResponse->call("xajax_limpiar");
+    } else {
+        $objResponse->alert("No se pudo actualizar los datos del Empleo\nError:\n", $objDB->getLastError());
+    }
     return $objResponse;
 }
 
 function confirmarEliminarForm($form) {
-
-    global $enlace, $objPaginacion, $objComun;
-
     $objResponse = new xajaxResponse();
-
     $objResponse->confirmCommands(1, "Deseas eliminar el registro?");
     $objResponse->call("xajax_eliminar", $form);
     return $objResponse;
 }
 
 function eliminar($form) {
-
     $codigo = strtoupper(trim($form['codigo']));
-
-    $nombre = strtoupper(trim($form['nombre']));
-
-    $descripcion = strtoupper(trim($form['descripcion']));
-
-    $sueldo = strtoupper(trim($form['sueldo']));
-
-    $codigo_empresa = strtoupper(trim($form['codigo_empresa']));
-
-    $estado = strtoupper(trim($form['estado']));
-
-    $fecha_vigencia = strtoupper(trim($form['fecha_vigencia']));
-
-    $duracion_contrato = strtoupper(trim($form['duracion_contrato']));
-
-    $localizacion = strtoupper(trim($form['localizacion']));
-
-    $disponibilidad = strtoupper(trim($form['disponibilidad']));
-
-    $fecha_publicacion = strtoupper(trim($form['fecha_publicacion']));
-
-
-    global $objPaginacion, $objComun;
 
     $objResponse = new xajaxResponse();
     $objDB = new Database();
@@ -237,8 +186,7 @@ function eliminar($form) {
     $objDB->getConexion();
     $objResponse = new xajaxResponse();
 
-    $sqlUpdate = "update  empleo set activo=0 where  codigo= '$codigo'
-";
+    $sqlUpdate = "update  " . SCHEMA . ".empleo set estado=0 where  codigo= '$codigo' ";
 
     $rs = $objDB->query($sqlUpdate);
 
@@ -254,12 +202,12 @@ function limpiar($form) {
     $objResponse->assign("nombre", "value", "");
     $objResponse->assign("descripcion", "value", "");
     $objResponse->assign("sueldo", "value", "");
-    $objResponse->assign("codigo_empresa", "value", "");
+    $objResponse->assign("cmbEmpresa", "value", "");
     $objResponse->assign("estado", "value", "");
     $objResponse->assign("fecha_vigencia", "value", "");
-    $objResponse->assign("duracion_contrato", "value", "");
+    $objResponse->assign("cmbDuracion", "value", "");
     $objResponse->assign("localizacion", "value", "");
-    $objResponse->assign("disponibilidad", "value", "");
+    $objResponse->assign("cmbDisponibilidad", "value", "");
     $objResponse->assign("fecha_publicacion", "value", "");
 
     return $objResponse;
@@ -274,25 +222,25 @@ function seleccionar($id) {
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
 
-    $sql = " select *    from empleo 
-    where  XXXXXXXXXXXX  like '%$query%' ";
+    $sql = " select *    from " . SCHEMA . ".empleo 
+    where  codigo  = '$id' ";
 
     $result = $objDB->query($sql);
     $numCols = $objDB->getNumCols();
 
     $ln = $objDB->fetch_array($result);
 
-    $objResponse->assign("codigo", "value", "$nombre");
-    $objResponse->assign("nombre", "value", "$nombre");
-    $objResponse->assign("descripcion", "value", "$nombre");
-    $objResponse->assign("sueldo", "value", "$nombre");
-    $objResponse->assign("codigo_empresa", "value", "$nombre");
-    $objResponse->assign("estado", "value", "$nombre");
-    $objResponse->assign("fecha_vigencia", "value", "$nombre");
-    $objResponse->assign("duracion_contrato", "value", "$nombre");
-    $objResponse->assign("localizacion", "value", "$nombre");
-    $objResponse->assign("disponibilidad", "value", "$nombre");
-    $objResponse->assign("fecha_publicacion", "value", "$nombre");
+    $objResponse->assign("codigo", "value", $ln["codigo"]);
+    $objResponse->assign("nombre", "value", $ln["nombre"]);
+    $objResponse->assign("descripcion", "value", $ln["descripcion"]);
+    $objResponse->assign("sueldo", "value", $ln["sueldo"]);
+    $objResponse->assign("cmbEmpresa", "value", $ln["codigo_empresa"]);
+    $objResponse->assign("estado", "value", $ln["estado"]);
+    $objResponse->assign("fecha_vigencia", "value", $ln["fecha_vigencia"]);
+    $objResponse->assign("cmbDuracion", "value", $ln["duracion_contrato"]);
+    $objResponse->assign("localizacion", "value", $ln["localizacion"]);
+    $objResponse->assign("cmbDisponibilidad", "value", $ln["disponibilidad"]);
+    $objResponse->assign("fecha_publicacion", "value", $ln["fecha_publicacion"]);
 
 
     return $objResponse;
@@ -306,9 +254,22 @@ function consultar($form) {
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
 
-    $sql = " select *    from empleo 
-    where  concat(nombre,' ', descripcion ,' ', localizacion )  like '%$query%' ";
+    $aut_usuario = $_SESSION["aut_usuario"];
+    $aut_perfil = $_SESSION["aut_perfil"];
+    $where = "";
+    if ($aut_perfil != "1") {
+        $where.=" and usuario='$aut_usuario' ";
+    }
 
+
+    $sql = "select a.codigo, a.nombre	, a.descripcion	, a.sueldo,	d.razon_social as empresa	
+        , a.fecha_vigencia,	b.nombre as duracion_contrato	, a.localizacion,	
+        c.nombre as disponibilidad	, a.fecha_publicacion    
+        from " . SCHEMA . ".empleo  as a inner join " . SCHEMA . ".duracion_contrato  as b 
+        on a.duracion_contrato = b.codigo  inner join " . SCHEMA . ".disponibilidad as c 
+        on a.disponibilidad = c.codigo inner join  " . SCHEMA . ".empresa as d
+        on a.codigo_empresa = d.codigo
+        and   concat(a.nombre,' ', a.descripcion ,' ', a.localizacion )  like '%$query%' $where ";
     $result = $objDB->query($sql);
     $numCols = $objDB->getNumCols();
 
@@ -339,7 +300,8 @@ function consultar($form) {
         $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
     }
     $tabla.="</tbody></table> </td></tr></table> ";
-    $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    //$objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    $objResponse->script('loadTabla();');
     $objResponse->assign("dvRespuesta", "innerHTML", "$tabla");
     return $objResponse;
 }

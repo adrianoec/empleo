@@ -92,10 +92,11 @@ function ingresar($form) {
 
     $objResponse = new xajaxResponse();
     //$objResponse->alert(print_r($form, true));
+    $aut_usuario = $_SESSION["aut_usuario"];
     $sqlInsert = "insert into candidato "
-            . "(nombres,apellidos,fecha_nacimiento,genero,telefono,movil,archivo,grupo_etnico,disponibilidad, cedula,foto) "
+            . "(nombres,apellidos,fecha_nacimiento,genero,telefono,movil,archivo,grupo_etnico,disponibilidad, cedula,foto,usuario) "
             . "values"
-            . "('$nombres','$apellidos','$fecha_nacimiento','$genero','$telefono','$movil','$archivo','$codigo_grupo_etnico','$disponibilidad','$cedula', '$foto');";
+            . "('$nombres','$apellidos','$fecha_nacimiento','$genero','$telefono','$movil','$archivo','$codigo_grupo_etnico','$disponibilidad','$cedula', '$foto','$aut_usuario');";
     $rs = $objDB->query($sqlInsert);
     if ($rs) {
         $sqlid = "select last_insert_id() as last;";
@@ -163,7 +164,7 @@ function actualizar($form) {
         $objResponse->alert("Actualizado...");
         $objResponse->call("xajax_limpiar");
     } else {
-        $objResponse->alert("No se pudo actualizar los datos del Candidato\nError:\n",$objDB->getLastError()."\n".$sqlUpdate);
+        $objResponse->alert("No se pudo actualizar los datos del Candidato\nError:\n",$objDB->getLastError());
     }
     return $objResponse;
 }
@@ -186,6 +187,7 @@ function eliminar($id) {
     $rs = $objDB->query($sqlUpdate);
     if ($rs == true) {
         $objResponse->alert("Desactivado...");
+        $_SESSION["codigo_candidato"] = "";
     } else {
         $objResponse->alert("No se pudo desactivar al Candidato");
     }
@@ -210,7 +212,7 @@ function limpiar($form) {
     $objResponse->assign("foto", "src", "");
     $objResponse->assign("cmbGrupoEtnico", "value", "");
     $objResponse->assign("cmbDisponibilidad", "value", "");
-
+    $_SESSION["codigo_candidato"] = "";
     return $objResponse;
 }
 
@@ -256,9 +258,22 @@ function consultar($form) {
     $objDB = new Database();
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
-
-    $sql = " select *    from candidato 
-    where  concat(nombres,' ',apellidos)  like '%$query%' and estado =1";
+    
+    $aut_usuario = $_SESSION["aut_usuario"];
+    $aut_perfil = $_SESSION["aut_perfil"];
+    $where="";
+    if($aut_perfil!="1"){
+       $where.=" and a.usuario='$aut_usuario' "; 
+    }
+    
+    $sql = " 
+        select a.codigo, a.nombres, a.apellidos, a.cedula, a.fecha_nacimiento,
+        a.genero, a.telefono, a.movil, b.nombre as grupo_etnico 
+        from candidato as a inner join grupo_etnico as b
+        on a.grupo_etnico = b.codigo inner join disponibilidad as c
+        on a.disponibilidad = c.codigo
+        and  concat(a.nombres,' ',a.apellidos)  like '%$query%' 
+        and a.estado =1  $where ";
 
     $result = $objDB->query($sql);
     $numCols = $objDB->getNumCols();
@@ -296,6 +311,7 @@ function consultar($form) {
     }
     $tabla.="</tbody></table> </td></tr></table> ";
     $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    $objResponse->script('loadTabla();');
     $objResponse->assign("dvRespuesta", "innerHTML", "$tabla");
     //$objResponse->alert($sql);
     return $objResponse;

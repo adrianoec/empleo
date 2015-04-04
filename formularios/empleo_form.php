@@ -33,131 +33,92 @@ if ($_SESSION["pe"] == "0") {
     <form name='form' id='form' action=''>
         <table border='0' align='center'>
             <tr> 
-                <td> 
-                    CODIGO 
-                </td> 
+                <td> CODIGO </td> 
                 <td><div id='dvReqCODIGO'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' name='codigo' id='codigo' value='' onfocus='' size='40'> 
+                    <input type='text' name='codigo' id='codigo' value='' onfocus='' size='40' readonly="true"> 
                 </td>
-</tr>
+            </tr>
             <tr> 
-                <td> 
-                    NOMBRE 
-                </td> 
+                <td> NOMBRE  </td> 
                 <td><div id='dvReqNOMBRE'><font color='red'>*</font></div></td> 
                 <td> 
                     <input type='text' name='nombre' id='nombre' value='' onfocus='' size='40'> 
                 </td>
             </tr>
             <tr> 
-                <td> 
-                    DESCRIPCION 
-                </td> 
+                <td>  DESCRIPCION </td> 
                 <td><div id='dvReqDESCRIPCION'><font color='red'>*</font></div></td> 
                 <td> 
                     <textarea name='descripcion' id='descripcion' onchange='' cols='30' rows="4"></textarea> 
                 </td>
-</tr>
+            </tr>
             <tr> 
-                <td> 
-                    SUELDO 
-                </td> 
+                <td> SUELDO  </td> 
                 <td><div id='dvReqSUELDO'><font color='red'>*</font></div></td> 
                 <td> 
                     <input type='text' name='sueldo' id='sueldo' value='' onfocus='' size='40'> 
                 </td>
             </tr>
             <tr> 
-                <td> 
-                    EMPRESA 
-                </td> 
+                <td> EMPRESA  </td> 
                 <td><div id='dvReqCODIGO_EMPRESA'><font color='red'>*</font></div></td> 
                 <td> 
                     <?php echo $cmbEmpresa ?> 
                 </td>
-</tr>
+            </tr>
+
             <tr> 
+                <td> FECHA VIGENCIA  </td> 
+                <td><div id='dvReqFECHA_VIGENCIA'><font color='red'>*</font></div></td> 
                 <td> 
-                    ESTADO 
-                </td> 
-                <td><div id='dvReqESTADO'><font color='red'>*</font></div></td> 
-                <td> 
-                    <?php echo $cmbEstado; ?> 
+                    <div> <input class="tcal"  type='text' name='fecha_vigencia' id='fecha_vigencia' value='' onfocus='' size='20'> </div>
                 </td>
             </tr>
             <tr> 
-                <td> 
-                    FECHA VIGENCIA 
-                </td> 
-                <td><div id='dvReqFECHA_VIGENCIA'><font color='red'>*</font></div></td> 
-                <td> 
-                    <div> <input class="tcal"  type='text' name='fecha_vigencia' id='fecha_vigencia' value='' onfocus='' size='40'> </div>
-                </td>
-</tr>
-            <tr> 
-                <td> 
-                    DURACION CONTRATO 
-                </td> 
+                <td> DURACION CONTRATO </td> 
                 <td><div id='dvReqDURACION_CONTRATO'><font color='red'>*</font></div></td> 
                 <td> 
                     <?php echo $cmbDuracion; ?> 
                 </td>
             </tr>
             <tr> 
-                <td> 
-                    LOCALIZACION 
-                </td> 
+                <td> LOCALIZACION  </td> 
                 <td><div id='dvReqLOCALIZACION'><font color='red'>*</font></div></td> 
                 <td> 
                     <input type='text' name='localizacion' id='localizacion' value='' onfocus='' size='40'> 
                 </td>
-</tr>
+            </tr>
             <tr> 
-                <td> 
-                    DISPONIBILIDAD 
-                </td> 
+                <td> DISPONIBILIDAD </td> 
                 <td><div id='dvReqDISPONIBILIDAD'><font color='red'>*</font></div></td> 
                 <td> 
                     <?php echo $cmbDisponibilidad; ?> 
                 </td>
             </tr>
             <tr> 
-
-                <td> 
-                    FECHA PUBLICACION 
-                </td> 
+                <td> FECHA PUBLICACION  </td> 
                 <td><div id='dvReqFECHA_PUBLICACION'><font color='red'>*</font></div></td> 
                 <td> 
-                    <div><input class="tcal" type='text' name='fecha_publicacion' id='fecha_publicacion' value='' onfocus='' size='40'> </div>
+                    <div><input class="tcal" type='text' name='fecha_publicacion' id='fecha_publicacion' value='<?php echo date("Y-m-d") ?>' onfocus='' size='20' readonly="true"> </div>
                 </td>
             </tr>
             <tr> 
-                <td colspan='5' align='center'>
-
-                    <table align='center'> 
+                <td colspan='5' align='center'><br/>
+                    <table align='center' width="80%"> 
                         <tr>
-
                             <td> 
                                 <input type="button" name="btnGuardar" id="btnGuardar" value="Guardar" onclick="xajax_validarForm(xajax.getFormValues('form'), 0)" <?php echo $pg; ?> /> 
                             </td>
-
                             <td> 
                                 <input type="button" name="btnActualizar" id="btnActualizar" value="Actualizar" onclick="xajax_validarForm(xajax.getFormValues('form'), 1)" <?php echo $pa; ?> /> 
                             </td>
-
                             <td> 
-                                <input type="button" name="btnEliminar" id="btnEliminar" value="Eliminar" onclick="xajax_confirmarEliminarForm(xajax.getFormValues('form'))" <?php echo $pe; ?> /> 
+                                <input type="button" name="btnCancelar" id="btnCancelar" value="Cancelar" onclick="xajax_limpiar(xajax.getFormValues('form'))" <?php echo $pe; ?> /> 
                             </td>
-
-                            <td> 
-                                <input type="button" name="btnCancelar" id="btnCancelar" value="Cancelar" onclick="xajax_limpiar(xajax.getFormValues('form'))" /> 
-                            </td>
-
                         </tr>  
                     </table> 
                 </td> 
-
             </tr> 
         </table> 
     </form>  

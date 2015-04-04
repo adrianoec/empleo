@@ -31,4 +31,4 @@
         <script type="text/javascript" src="./lib/modal-message/js/ajax-dynamic-content.js"></script>
         
     </head> 
-   
+   <center> <img src="/imagenes/logojuventudempleomini.jpg"/> </center>

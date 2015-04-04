@@ -241,7 +241,7 @@ function consultar($form) {
     $nuevo = "<img src='" . HOME . "imagenes/page_white_text.png'/>";
     $nuevoLnk = " style='cursor:pointer' onclick = 'xajax_nuevo()' ";
 
-    $tabla = "<table border='0' align ='center' class='tablesorter' cellspacing='1'><thead><tr>";
+    $tabla = "<center><table width='70%'><tr><td><table border='0' align ='center' class='tablesorter' cellspacing='1'><thead><tr>";
     $arrTi = $objDB->field_name($result);
 
     foreach ($arrTi as $ln) {
@@ -262,7 +262,7 @@ function consultar($form) {
         $eliminarLnk = " style='cursor:pointer' onclick = 'xajax_confirmarEliminarForm($id)' ";
         $tabla .= $tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
     }
-    $tabla .= "</tbody></table>";
+    $tabla .= "</tbody></table></td></tr></table></center>";
 
     $objResponse->assign("dvRespuesta", "innerHTML", "$tabla");
     $objResponse->script('loadTabla();');

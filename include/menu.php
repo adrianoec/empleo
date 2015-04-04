@@ -35,20 +35,21 @@ from pagina where padre =1 and codigo_padre=0 order by orden,codigo_padre";
 $rs = $objDB->query($sqlInsert);
 $numrows = $objDB->getNumRows();
 ?>
-<div style="border: 1px solid blue; ">
-    <ul class="jd_menu">
-        <?php
-        while ($ln = $objDB->fetch_array($rs)) {
-            $nom = $ln["menu"];
-            $padre = $ln["codigo"];
+<center><table width="70%"><tr><td><div style="border: 1px solid blue; ">
+                    <ul class="jd_menu">
+                        <?php
+                        while ($ln = $objDB->fetch_array($rs)) {
+                            $nom = $ln["menu"];
+                            $padre = $ln["codigo"];
 
-            echo "<li><a href='#' class='accessible'>$nom</a>";
-            echo hijo($objDB, $padre);
-            echo "</li>\n";
-        }
-        ?>
-    </ul>
-</div>
+                            echo "<li><a href='#' class='accessible'>$nom</a>";
+                            echo hijo($objDB, $padre);
+                            echo "</li>\n";
+                        }
+                        ?>
+                    </ul>
+                </div></td>
+        </tr></table></center><br/>
 <?php
 
 function hijo($objDB, $codigo) {
@@ -58,9 +59,9 @@ function hijo($objDB, $codigo) {
 
     $sqlUpdate = "select a.codigo, a.pagina, a.menu
   , a.codigo_padre, b.codigo_rol, a.descripcion, a.padre
-  from ".SCHEMA.".pagina as a inner join ".SCHEMA.".pagina_rol as b
+  from " . SCHEMA . ".pagina as a inner join " . SCHEMA . ".pagina_rol as b
   on a.codigo = b.codigo_pagina
-  inner join ".SCHEMA.".permiso as c
+  inner join " . SCHEMA . ".permiso as c
   on a.codigo=c.codigo_pagina
   and b.codigo_rol=c.codigo_rol
   and c.acceso_menu=1
@@ -70,7 +71,7 @@ function hijo($objDB, $codigo) {
 
     $rs = $objDB->query($sqlUpdate);
     $numrows = $objDB->getNumRows();
-    $m="";
+    $m = "";
     if ($numrows > 0) {
         $m.="\n<ul>";
         while ($ln = $objDB->fetch_array($rs)) {

@@ -6,10 +6,7 @@ if ($_GET["codigo"] > 0) {
     /* actualizacion */
     $codigo = $_GET["codigo"] ; 
     echo "<script>xajax_seleccionar($codigo);</script>";
-} else {
-    /* nuevo */
-    echo "<script>alert($codigo);</script>";
-}
+} 
 ?>
 
 <table  width="70%" class="acordeon" align="center" >
