@@ -450,7 +450,7 @@ function generarFunciones() {
 
         $campoLimpiar.="\$objResponse->assign(\"$nombre\",\"value\",\"\");\n";
 
-        $campoSelect.="\$objResponse->assign(\"$nombre\",\"value\",\"\$nombre\");\n";
+        $campoSelect.="\$objResponse->assign(\"$nombre\",\"value\",\$ln[\"$nombre\"]);\n";
 
         if ($comboSN == 'S') { // si el campo se debe  mostrar en el form
             $nombre = $form['txtCol' . $i];
@@ -551,7 +551,12 @@ function generarFunciones() {
     \t \$sqlInsert .= \"($campoValues);\" ;\n
     \t \$rs=\$objDB->query(\$sqlInsert);\n
     \t \$objResponse->alert(\"Registrado...\");
-    \$objDB->Cerrar(); \n
+    \t if(\$rs==true){
+    \t \$objResponse->alert(\"Registrado...\");
+    \$objResponse->call(\"xajax_limpiar\");
+    \t}else{
+    \t \$objResponse->alert(\"No se pudo registrar...\");
+    \t}
     \t return \$objResponse;\n
     }\n
     function actualizar(\$form){\n
@@ -560,10 +565,14 @@ function generarFunciones() {
     \$objDB->setParametrosBD(HOST, BASE, USER, PWD);
     \$objDB->getConexion();
     \t \$objResponse = new xajaxResponse();\n
-    \t \$sqlUpdate = \"update  $txtNombreTabla set $campoUpdate where $campoUpdatewhere\" ;\n
+    \t \$sqlUpdate = \"update  \" . SCHEMA . \".$txtNombreTabla set $campoUpdate where $campoUpdatewhere\" ;\n
     \t \$rs=\$objDB->query(\$sqlUpdate);\n
+    \t if(\$rs==true){
     \t \$objResponse->alert(\"Actualizado...\");
-    \$objDB->Cerrar(); \n
+    \$objResponse->call(\"xajax_limpiar\");
+    \t}else{
+    \t \$objResponse->alert(\"No se pudo actualizar...\");
+    \t}
     \t return \$objResponse;\n
     }\n
     
@@ -574,7 +583,7 @@ function confirmarEliminarForm(\$form){\n
     \t return \$objResponse;\n
     }\n
     
-function eliminar(\$form){\n
+function eliminar(\$codigo){\n
     $campos
     \$objResponse = new xajaxResponse();
     \$objDB = new Database();
@@ -582,10 +591,15 @@ function eliminar(\$form){\n
     \$objDB->getConexion();
     \t \$objResponse = new xajaxResponse();\n
     \t \$codigo = \$form[\"\"];
-    \t \$sqlUpdate = \"update  $txtNombreTabla set estado=0 where codigo = '\$codigo' \" ;\n
+    \t \$sqlUpdate = \"update  \" . SCHEMA . \".$txtNombreTabla set estado=0 where codigo = '\$codigo' \" ;\n
     \t \$rs=\$objDB->query(\$sqlUpdate);\n
+    
+    \t if(\$rs==true){
     \t \$objResponse->alert(\"Desactivado...\");
-    \$objDB->Cerrar(); \n
+    \t \$objResponse->call(\"xajax_limpiar\");
+    \t}else{
+    \t \$objResponse->alert(\"No se pudo eliminar...\");
+    \t}
     \t return \$objResponse;\n
     }\n
 
@@ -602,7 +616,7 @@ function seleccionar(\$id){\n
     \$objDB->setParametrosBD(HOST, BASE, USER, PWD);
     \$objDB->getConexion();
 
-    \$sql = \" select *    from $txtNombreTabla 
+    \$sql = \" select *    from \" . SCHEMA . \".$txtNombreTabla 
     where  codigo  = '\$id' ;\";
 
     \$result = \$objDB->query(\$sql);
@@ -612,7 +626,7 @@ function seleccionar(\$id){\n
     
 $campoSelect
     
-    \$objDB->Cerrar(); \n
+ 
     \t return \$objResponse;\n
     }\n
 
@@ -624,8 +638,15 @@ function consultar(\$form) {
     \$objDB->setParametrosBD(HOST, BASE, USER, PWD);
     \$objDB->getConexion();
 
-    \$sql = \" select *    from $txtNombreTabla 
-    where  concat(  , ' ',   , ' ',  )  like '%\$query%' \";
+    \$aut_usuario = \$_SESSION[\"aut_usuario\"];
+    \$aut_perfil = \$_SESSION[\"aut_perfil\"];
+    \$where = \"\";
+    if (\$aut_perfil != \"1\") {
+        \$where.=\" and usuario='\$aut_usuario' \";
+    }
+
+    \$sql = \" select *    from \" . SCHEMA . \".$txtNombreTabla 
+    where  concat(  , ' ',   , ' ',  )  like '%\$query%' \$where  \";
 
     \$result = \$objDB->query(\$sql);
     \$numCols = \$objDB->getNumCols();
@@ -657,7 +678,7 @@ function consultar(\$form) {
         \$tabla.=\$tb.\" <td \$actalizarLnk >\$actualizar</td><td \$eliminarLnk >\$eliminar</td>   </tr>\";
     }
     \$tabla.=\"</tbody></table> </td></tr></table> \";
-    \$objResponse->script('function loadTabla(){\$(\"table\").tablesorter({ widgets: [\'zebra\']});  }  $(function() {\$(\"table\") .tablesorter({ widgets: [\'zebra\']});  });');
+    \$objResponse->script('loadTabla();');
     \$objResponse->assign(\"dvRespuesta\", \"innerHTML\", \"\$tabla\");
     \$objDB->Cerrar(); \n
     return \$objResponse;
@@ -692,6 +713,8 @@ function generarPrincipal() {
         include_once('empleo.config.php');
         include_once (HOME.'include/xajax_conf.php');
         include_once (HOME.'include/db.class.php');
+        include_once (HOME.'include/db.class.php');
+        include_once (HOME .'include/funciones.class.php');
         include_once (HOME.'include/obtenerPermiso.php');
         if(\$_SESSION[\"pm\"]==\"0\" or (\$_SESSION[\"aut_usuario\"]==\"\" or !isset(\$_SESSION[\"aut_usuario\"])) ){
             header(\"Location: login.php\");
@@ -704,6 +727,8 @@ function generarPrincipal() {
         include_once(HOME.'formularios/$txtNombreArchivo" . "_form.php');
         include_once(HOME.'include/pie.php');
     ?>";
+
+    
 
     $txtNombreArchivo = strtolower($txtNombreArchivo);
     $fileForm = fopen("./$txtNombreArchivo.php", "w+");

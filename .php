@@ -4,6 +4,8 @@
         include_once('empleo.config.php');
         include_once (HOME.'include/xajax_conf.php');
         include_once (HOME.'include/db.class.php');
+        include_once (HOME.'include/db.class.php');
+        include_once (HOME .'include/funciones.class.php');
         include_once (HOME.'include/obtenerPermiso.php');
         if($_SESSION["pm"]=="0" or ($_SESSION["aut_usuario"]=="" or !isset($_SESSION["aut_usuario"])) ){
             header("Location: login.php");

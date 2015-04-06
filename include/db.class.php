@@ -112,7 +112,7 @@ class Database {
      * @return boolean
      */
     private function connect() {
-        $this->_dblink = mysql_connect($this->_dbhost , $this->_dbuser, $this->_dbpasswd);
+        $this->_dblink = mysql_connect($this->_dbhost, $this->_dbuser, $this->_dbpasswd);
         if ($this->_dblink) {
             mysql_select_db($this->_dbname, $this->_dblink);
             $this->_connection_status = mysql_stat($this->_dblink);
@@ -180,6 +180,12 @@ class Database {
         if (!empty($this->_dblink)) {
             mysql_close($this->_dblink);
             unset($this->_dblink);
+        }
+    }
+
+    public function cerrar() {
+        if (!empty($this->_dblink)) {
+            @mysql_close($this->_dblink);
         }
     }
 
