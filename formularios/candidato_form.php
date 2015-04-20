@@ -115,13 +115,20 @@ if ($_POST["btna"] == "actualizar") {
     echo "<script >  xajax_actualizar('" . json_encode($form) . "')</script>";
 }
 ?>
+
+<div > <center><h3>REgistro Perfil del Aspirante</h3></center></div>
+
 <table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvConsulta')" >Consulta</td></tr></table>
 
 <div id='dvConsulta' >
     <form id='formQuery'><table align="center" class="campo" >
-            <tr><td>Consultar:</td>
-                <td><input type='text' id='txtConsulta' name='txtConsulta' value='' /></td>
-                <td><input type='button' name='btnConsultar' id='btnConsultar' value='Consultar' onclick="xajax_consultar(xajax.getFormValues('formQuery'))" ></td></tr></table></form> 
+            <tr><td class="td_textox">Consultar:</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input  class="textbox"  type='text' id='txtConsulta' name='txtConsulta' value='' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td><input class="css_button" type='button' name='btnConsultar' id='btnConsultar' value='Consultar' onclick="xajax_consultar(xajax.getFormValues('formQuery'))" ></td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            </tr>
+        </table>
+    </form> 
     <center> 
         <div id='dvRespuesta'> </div> 
         <div id='dvPaginacion'></div> 
@@ -131,20 +138,18 @@ if ($_POST["btna"] == "actualizar") {
 <table  width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvFormulario')">Candidato</td></tr></table>
 <div id='dvFormulario' >
     <form name='form' id='form' action=''  enctype="multipart/form-data" method="post" >
-        <table border='0' align='center'>
+        <table border='0' align='center' cellspacing="5px">
             <tr> 
-                <td> 
-                    CODIGO 
-                </td> 
+                <td  class="td_textox">Codigo</td> 
                 <td><div id='dvReqCODIGO'><font color='red'></font></div></td> 
                 <td> 
-                    <input type='text' name='codigo' id='codigo' value='' onfocus='' size='40' disabled="true"> 
+                    <input  class="textbox" type='text' name='codigo' id='codigo' value='' onfocus='' size='40' disabled="true"> 
                 </td>
                 <td rowspan="9">&nbsp;&nbsp;&nbsp;</td>
                 <td rowspan="6">
-                    <div>FOTO </div> 
+                    <div class="td_textox">Foto </div> 
                     <div>
-                        <img src="<?php echo $nombrefoto; ?>" id="foto" name="foto" alt="foto" height="100" width="100"/> 
+                        <img  src="<?php echo $nombrefoto; ?>" id="foto" name="foto" alt="foto" height="100" width="100"/> 
                     </div> 
                     <div>
                         <input name="archivo" id="archivo" type="file" size="35"  />
@@ -152,35 +157,35 @@ if ($_POST["btna"] == "actualizar") {
                 </td> 
             </tr>
             <tr>
-                <td>NOMBRES </td> 
+                <td class="td_textox">Nombres </td> 
                 <td><div id='dvReqNOMBRES'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' name='nombres' id='nombres' value='<?php echo $nombres; ?>' onfocus='' size='40'> 
+                    <input  class="textbox" type='text' name='nombres' id='nombres' value='<?php echo $nombres; ?>' onfocus='' size='40'> 
                 </td>
             </tr>
             <tr> 
-                <td>APELLIDOS</td> 
+                <td class="td_textox">Apellidos</td> 
                 <td><div id='dvReqAPELLIDOS'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' name='apellidos' id='apellidos' value='<?php echo $apellidos; ?>' onfocus='' size='40'> 
+                    <input  class="textbox" type='text' name='apellidos' id='apellidos' value='<?php echo $apellidos; ?>' onfocus='' size='40'> 
                 </td>
             </tr>
             <tr> 
-                <td>CECULA IDENTIDAD</td> 
+                <td class="td_textox">Cedula Identidad</td> 
                 <td><div id='dvReqCECULA'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' name='cedula' id='cedula' value='<?php echo $cedula; ?>' onfocus='' size='40'> 
+                    <input  class="textbox" type='text' name='cedula' id='cedula' value='<?php echo $cedula; ?>' onfocus='' size='40'> 
                 </td>
             </tr>
             <tr>
-                <td> FECHA NACIMIENTO</td> 
+                <td  class="td_textox"> Fecha Nacimiento</td> 
                 <td><div id='dvReqFECHA_NACIMIENTO'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' class="tcal" name='fecha_nacimiento' id='fecha_nacimiento' value='<?php echo $fecha_nacimiento; ?>' onfocus='' size='20'> 
+                    <input   type='text' class="tcal" name='fecha_nacimiento' id='fecha_nacimiento' value='<?php echo $fecha_nacimiento; ?>' onfocus='' size='20'> 
                 </td>
             </tr>
             <tr> 
-                <td>  GENERO </td> 
+                <td  class="td_textox">  Genero </td> 
                 <td><div id='dvReqGENERO'><font color='red'>*</font></div></td> 
                 <td> 
                     <select name='genero' id='genero' onchange=''>
@@ -191,42 +196,43 @@ if ($_POST["btna"] == "actualizar") {
                 </td>
             </tr>
             <tr>
-                <td> TELEFONO </td> 
+                <td  class="td_textox"> Telefono </td> 
                 <td><div id='dvReqTELEFONO'><font color='red'>*</font></div></td> 
                 <td> 
-                    <input type='text' name='telefono' id='telefono' value='<?php echo $telefono; ?>' onfocus='' size='40'> 
+                    <input  class="textbox" type='text' name='telefono' id='telefono' value='<?php echo $telefono; ?>' onfocus='' size='40'> 
                 </td>
             </tr>
             <tr> 
-                <td>  MOVIL  </td> 
+                <td  class="td_textox">  Movil  </td> 
                 <td><div id='dvReqMOVIL'></div></td> 
                 <td> 
-                    <input type='text' name='movil' id='movil' value='<?php echo $movil; ?>' onfocus='' size='40'> 
+                    <input  class="textbox" type='text' name='movil' id='movil' value='<?php echo $movil; ?>' onfocus='' size='40'> 
                 </td>
-                <td rowspan="3">
-                    <div>HOJA DE VIDA </div> 
+                <td rowspan="3" >
+                    <div  class="td_textox">Hoja de Vida </div> 
 
                     <div>
-                        <input type="text" name="hoja" id="hoja" value="<?php echo $nombrehoja;?>" disabled="true" size='40'/>
+                        <input  class="textbox_esp" type="text" name="hoja" id="hoja" value="<?php echo $nombrehoja; ?>" disabled="true" size='40'/>
                     </div> 
                     <div>
-                        <input name="archivoh" id="archivoh" type="file" size="35"  />
+                        <input  name="archivoh" id="archivoh" type="file" size="35" placeholder="Seleccione Archivo" />
                     </div> 
                 </td> 
             </tr>
             <tr> 
-                <td> GRUPO ETNICO  </td> 
+                <td class="td_textox"> Grupo Etnico  </td> 
                 <td><div id='dvReqCODIGO_GRUPO_ETNICO'><font color='red'>*</font></div></td> 
                 <td> 
                     <?php echo $cmbGrupoEtnico ?> 
                 </td>
             </tr>
             <tr>
-                <td>DISPONIBILIDAD</td> 
+                <td class="td_textox">Disponibilidad</td> 
                 <td><div id='dvReqDISPONIBILIDAD'><font color='red'>*</font></div></td> 
                 <td> 
                     <?php echo $cmbDisponibilidad ?>
                 </td>
+                
             </tr>
             <tr> 
                 <td colspan='5' align='center'>
@@ -235,16 +241,16 @@ if ($_POST["btna"] == "actualizar") {
                     <table align='center' width="80%"> 
                         <tr>
                             <td> 
-                                <input type="button" name="btnGuardar" id="btnGuardar" value="Guardar" onclick="xajax_validarForm(xajax.getFormValues('form'), 0)" <?php echo $pg; ?> /> 
+                                <input class="css_button" type="button" name="btnGuardar" id="btnGuardar" value="Guardar" onclick="xajax_validarForm(xajax.getFormValues('form'), 0)" <?php echo $pg; ?> /> 
 
                             </td>
                             <td> 
-                                <input type="button" name="btnActualizar" id="btnActualizar" value="Actualizar" onclick="xajax_validarForm(xajax.getFormValues('form'), 1)" <?php echo $pa; ?> /> 
+                                <input class="css_button" type="button" name="btnActualizar" id="btnActualizar" value="Actualizar" onclick="xajax_validarForm(xajax.getFormValues('form'), 1)" <?php echo $pa; ?> /> 
 
                             </td>
-           
+
                             <td> 
-                                <input type="button" name="btnCancelar" id="btnCancelar" value="Cancelar" onclick="xajax_limpiar(xajax.getFormValues('form'))" /> 
+                                <input class="css_button" type="button" name="btnCancelar" id="btnCancelar" value="Cancelar" onclick="xajax_limpiar(xajax.getFormValues('form'))" /> 
                             </td>
                         </tr>  
                     </table> 

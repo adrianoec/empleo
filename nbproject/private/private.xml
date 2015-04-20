@@ -3,15 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/UniServerZ/vhosts/empleo/include/xajax_conf.php</file>
-            <file>file:/D:/UniServerZ/vhosts/empleo/aplicar_empleo.php</file>
-            <file>file:/D:/UniServerZ/vhosts/empleo/funciones_xjx/empresa_xajax.php</file>
-            <file>file:/D:/UniServerZ/vhosts/empleo/funciones_xjx/empleo_xajax.php</file>
-            <file>file:/D:/UniServerZ/vhosts/empleo/funciones_xjx/permiso_xajax.php</file>
+            <file>file:/D:/UniServerZ/vhosts/empleo/formularios/empresa_empleo_form.php</file>
+            <file>file:/D:/UniServerZ/vhosts/empleo/formularios/candidato_form.php</file>
+            <file>file:/D:/UniServerZ/vhosts/empleo/lib/xajax_05/xajax_core/xajaxResponse.inc.php</file>
             <file>file:/D:/UniServerZ/vhosts/empleo/funciones_xjx/aplicar_empleo_xajax.php</file>
-            <file>file:/D:/UniServerZ/vhosts/empleo/include/db.class.php</file>
+            <file>file:/D:/UniServerZ/vhosts/empleo/formularios/empresa_form.php</file>
+            <file>file:/D:/UniServerZ/vhosts/empleo/funciones_xjx/login_xajax.php</file>
             <file>file:/D:/UniServerZ/vhosts/empleo/formularios/aplicar_empleo_form.php</file>
-            <file>file:/D:/UniServerZ/vhosts/empleo/empleo.php</file>
+            <file>file:/D:/UniServerZ/vhosts/empleo/empresa_empleo.php</file>
             <file>file:/D:/UniServerZ/vhosts/empleo/formularios/empleo_form.php</file>
         </group>
     </open-files>

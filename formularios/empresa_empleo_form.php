@@ -20,7 +20,7 @@ if ($_SESSION["pe"] == "0") {
     $pe = "disabled='true'";
 }
 ?>
-<div > <center><h3>Reporte Empleos Disponibles</h3></center></div>
+<div > <center><h3>Reporte Aspirantes a Empleo</h3></center></div>
    <table width = "70%" class="acordeon" align="center" >
        <tr>
            <td onclick="muestra_oculta('dvFormulario')">Consulta</td>
@@ -30,17 +30,17 @@ if ($_SESSION["pe"] == "0") {
         <form name='form' id='form' action=''>
             <table border='0' align='center' cellspacing="8px">
                 <tr> 
-                    <td class="td_textox"> Titulo / Descripci&oacute;n </td> 
+                    <td class="td_textox"> Fecha Desde </td> 
                     <td><div id='dvReqTITULO'></div></td> 
                     <td> 
-                        <input class="textbox_esp" type='text' name='titulo' id='titulo' value='' onfocus='' size='40'> 
+                        <input class="tcal" type='text' name='desde' id='desde' value='<?php echo date("Y-m-d")?>' onfocus='' size='40'> 
                     </td>
                 
                  
-                    <td class="td_textox"> Sueldo / Localizaci&oacute;n </td> 
+                    <td class="td_textox"> Fecha Hasta </td> 
                     <td><div id='dvReqSUELDO'></div></td> 
                     <td> 
-                        <input class="textbox_esp" type='text' name='sueldo' id='sueldo' value='' onfocus='' size='20'> 
+                        <input class="tcal" type='text' name='hasta' id='hasta' value='<?php echo date("Y-m-d")?>' onfocus='' size='20'> 
                     </td>
                 </tr>
 

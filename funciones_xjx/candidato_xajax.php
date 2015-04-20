@@ -310,7 +310,7 @@ function consultar($form) {
         $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
     }
     $tabla.="</tbody></table> </td></tr></table> ";
-    $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    //$objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
     $objResponse->script('loadTabla();');
     $objResponse->assign("dvRespuesta", "innerHTML", "$tabla");
     //$objResponse->alert($sql);
@@ -357,7 +357,8 @@ function consultarDirecciones($codigo) {
         $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
     }
     $tabla.="</tbody></table> </td></tr></table>";
-    $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    //$objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    $objResponse->script('loadTabla();');
     $objResponse->assign("dvDireccion", "innerHTML", "$tabla");
 
     return $objResponse;
@@ -404,7 +405,8 @@ function consultarEstudios($codigo) {
         $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
     }
     $tabla.="</tbody></table> </td></tr></table> ";
-    $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    //$objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    $objResponse->script('loadTabla();');
     $objResponse->assign("dvEstudios", "innerHTML", "$tabla");
 
     return $objResponse;
@@ -452,7 +454,8 @@ function consultarExperiencia($codigo) {
         $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
     }
     $tabla.="</tbody></table> </td></tr></table> ";
-    $objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    //$objResponse->script('function loadTabla(){$("table").tablesorter({ widgets: [\'zebra\']});  }  $(function() {$("table") .tablesorter({ widgets: [\'zebra\']});  });');
+    $objResponse->script('loadTabla();');
     $objResponse->assign("dvExperiencia", "innerHTML", "$tabla");
 
     return $objResponse;
