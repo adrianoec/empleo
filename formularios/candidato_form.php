@@ -68,6 +68,11 @@ if ($_POST["btna"] == "guardar") {
     echo "<script >  xajax_ingresar('" . json_encode($form) . "')</script>";
 }
 if ($_POST["btna"] == "actualizar") {
+    
+//    echo "<pre>";
+//    print_r($_POST);
+//    print_r($_FILES);
+//    echo "</pre>";
     $codigo = strtoupper($_POST["codigo"]);
     $archivo = strtoupper($_POST["archivo"]);
     $nombres = strtoupper($_POST["nombres"]);
@@ -116,7 +121,7 @@ if ($_POST["btna"] == "actualizar") {
 }
 ?>
 
-<div > <center><h3>REgistro Perfil del Aspirante</h3></center></div>
+<div > <center><h3>Registro Perfil del Aspirante</h3></center></div>
 
 <table width="70%" class="acordeon" align="center" ><tr><td onclick="muestra_oculta('dvConsulta')" >Consulta</td></tr></table>
 
@@ -143,7 +148,7 @@ if ($_POST["btna"] == "actualizar") {
                 <td  class="td_textox">Codigo</td> 
                 <td><div id='dvReqCODIGO'><font color='red'></font></div></td> 
                 <td> 
-                    <input  class="textbox" type='text' name='codigo' id='codigo' value='' onfocus='' size='40' disabled="true"> 
+                    <input  class="textbox" type='text' name='codigo' id='codigo' value='' onfocus='' size='40' readonly="true"> 
                 </td>
                 <td rowspan="9">&nbsp;&nbsp;&nbsp;</td>
                 <td rowspan="6">

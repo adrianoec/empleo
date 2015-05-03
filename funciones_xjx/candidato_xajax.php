@@ -130,8 +130,8 @@ function actualizar($form) {
     $codigo_direccion = strtoupper(trim($form['codigo_direccion']));
     $archivo = trim($form['archivo']);
     $foto = trim($form['foto']);
-    $codigo_grupo_etnico = strtoupper(trim($form['codigo_grupo_etnico']));
-    $disponibilidad = strtoupper(trim($form['disponibilidad']));
+    $codigo_grupo_etnico = strtoupper(trim($form['cmbGrupoEtnico']));
+    $disponibilidad = strtoupper(trim($form['cmbDisponibilidad']));
     $objDB = new Database();
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
@@ -159,7 +159,7 @@ function actualizar($form) {
     ";
 
     $rs = $objDB->query($sqlUpdate);
-
+//$objResponse->alert($sqlUpdate);
     if ($rs == true) {
         $objResponse->alert("Actualizado...");
         $objResponse->call("xajax_limpiar");
@@ -212,6 +212,9 @@ function limpiar($form) {
     $objResponse->assign("foto", "src", "");
     $objResponse->assign("cmbGrupoEtnico", "value", "");
     $objResponse->assign("cmbDisponibilidad", "value", "");
+    
+    $objResponse->assign("btnGuardar","disabled" ,"");
+    
     $_SESSION["codigo_candidato"] = "";
     return $objResponse;
 }
@@ -246,6 +249,9 @@ function seleccionar($id) {
     $objResponse->call("xajax_consultarDirecciones", $id);
     $objResponse->call("xajax_consultarEstudios", $id);
     $objResponse->call("xajax_consultarExperiencia", $id);
+    
+    $objResponse->assign("btnGuardar","disabled" ,"true");
+    
     $_SESSION["codigo_candidato"] = $id;
     return $objResponse;
 }
@@ -323,8 +329,10 @@ function consultarDirecciones($codigo) {
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
 
-    $sql = " select *    from direccion 
-    where  codigo_candidato  = '$codigo' ";
+    $sql = " select a.codigo, a.calle_principal, a.calle_secundaria, a.nro, a.referencia, b.nombre as ciudad    
+        from direccion as a inner join ciudad as b
+        on a.codigo_ciudad = b.codigo 
+        where  a.codigo_candidato  = '$codigo' ";
 
 
     $result = $objDB->query($sql);
@@ -351,7 +359,7 @@ function consultarDirecciones($codigo) {
             $tb.="<td id = 'dv_$i'.'_$id'>$dato</td>";
         }
         $actualizar = "<img src='" . HOME . "imagenes/page_white_edit.png'/>";
-        $actalizarLnk = " style='cursor:pointer' onclick=\"return popitup('./direccion_aux.php?codigo=$id', 'direccion', 300, 400);\" ";
+        $actalizarLnk = " style='cursor:pointer' onclick=\"return popitup('./direccion_aux.php?codigo=$id', 'direccion', 400, 500);\" ";
         $eliminar = "<img src='" . HOME . "imagenes/cross.png'/>";
         $eliminarLnk = " style='cursor:pointer' onclick = 'xajax_confirmarEliminarDireccion($id)' ";
         $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
@@ -371,7 +379,10 @@ function consultarEstudios($codigo) {
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
 
-    $sql = " select *    from estudio 
+    $sql = " select a.codigo, a.titulo, a.horas, a.fecha_inicio, a.fecha_fin, b.nombre as nivel_academico, c.nombre as institucion
+    from estudio  as a inner join  tipo_nivel_academico as b
+    on a.codigo_tipo_nivel_academico = b.codigo inner join institucion as c
+    on a.codigo_institucion = c.codigo 
     where  codigo_candidato  = '$codigo' ";
 
     $result = $objDB->query($sql);
@@ -399,7 +410,7 @@ function consultarEstudios($codigo) {
         }
         $actualizar = "<img src='" . HOME . "imagenes/page_white_edit.png'/>";
         //$actalizarLnk = " style='cursor:pointer' onclick = 'xajax_seleccionar($id)' ";
-        $actalizarLnk = " style='cursor:pointer' onclick=\"return popitup('./estudio_aux.php?codigo=$id', 'direccion', 300, 400);\" ";
+        $actalizarLnk = " style='cursor:pointer' onclick=\"return popitup('./estudio_aux.php?codigo=$id', 'direccion', 400, 500);\" ";
         $eliminar = "<img src='" . HOME . "imagenes/cross.png'/>";
         $eliminarLnk = " style='cursor:pointer' onclick = 'xajax_confirmarEliminarForm($id)' ";
         $tabla.=$tb . " <td $actalizarLnk >$actualizar</td><td $eliminarLnk >$eliminar</td>   </tr>";
@@ -420,7 +431,7 @@ function consultarExperiencia($codigo) {
     $objDB->setParametrosBD(HOST, BASE, USER, PWD);
     $objDB->getConexion();
 
-    $sql = " select *    from experiencia 
+    $sql = " select codigo, fecha_inicio, fecha_fin, empresa, cargo, tareas, nro_empleados   from experiencia 
     where  codigo_candidato  = '$codigo' ";
 
     $result = $objDB->query($sql);
