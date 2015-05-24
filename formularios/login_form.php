@@ -22,7 +22,7 @@ $cmbRol = $objFunciones->generarCombo("cmbRol", "select codigo, nombre from  ".S
                                     </div>
                                 </td>
                                 <td>
-                                    <input type='text' name='usuario' id='usuario' value='1' onfocus='' size='25'>
+                                    <input class="textbox" type='text' name='usuario' id='usuario' value='1' onfocus='' size='25'>
 
                                 </td>
                             </tr>
@@ -33,7 +33,7 @@ $cmbRol = $objFunciones->generarCombo("cmbRol", "select codigo, nombre from  ".S
                                         <font color='red'>*</font> 
                                     </div></td>
                                 <td>
-                                    <input type='password' name='clave' id='clave' value='2' onfocus='' size='25'>
+                                    <input class="textbox"  type='password' name='clave' id='clave' value='2' onfocus='' size='25'>
 
                                 </td>
                             </tr>

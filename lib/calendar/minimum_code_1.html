@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--Doctype is not required - can be HTML or XHTML-->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr">
+    <head>
+        <title>Minimum Required Code - Epoch Prime</title>
+        <link rel="stylesheet" type="text/css" href="epoch_styles.css" />
+        <script type="text/javascript" src="epoch_classes.js"></script>
+        <script type="text/javascript">
+            var bas_cal, dp_cal, ms_cal;
+            window.onload = function () {
+                dp_cal = new Epoch('epoch_popup', 'popup', document.getElementById('popup_container'));
+                
+            };
+        </script>
+    </head>
+    <body>
+        <form id="placeholder" method="get" action="#">
+            <input id="popup_container" type="text" />
+        </form>
+    </body>
+</html>

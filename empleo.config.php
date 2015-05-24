@@ -5,5 +5,5 @@ define("HOME", "./");
 define("HOST", "localhost");
 define("BASE", "empleo");
 define("USER", "root");
-define("PWD", "rot123");
+define("PWD", "root123");
 define("SCHEMA", "empleo");
